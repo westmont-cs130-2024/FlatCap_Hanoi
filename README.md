@@ -1,4 +1,7 @@
 # FlatCap_Hanoi 
 Helpppppp
-hello????
-fhinuw eofbgfwel
+Hellooooooooooo
+
+## Author Information
+- Names: Connor Rogstad, 
+
