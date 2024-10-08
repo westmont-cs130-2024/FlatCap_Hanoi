@@ -1,4 +1,6 @@
 # FlatCap_Hanoi
 
-# Yooooo
+Yooooo
 
+## Author Information
+- Names: Connor Rogstad, 
