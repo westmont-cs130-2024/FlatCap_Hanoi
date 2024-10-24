@@ -1,0 +1,12 @@
+<h1>Assets</h1>
+
+<% @assets.each do |asset| %>
+  <div class="card">
+    <div class="asset-type"><%= asset.asset_type %></div>
+    <div class="asset-details">
+      <h2><%= asset.name %></h2>
+      <p><%= asset.description %></p>
+    </div>
+  </div>
+<% end %>
+
