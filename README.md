@@ -1,5 +1,3 @@
-# FlatCap_Hanoi
+# README
 
-
-## Author Information
-- Names: Connor Rogstad, 
+Testing project to get familiar with Ruby and Rails. 
