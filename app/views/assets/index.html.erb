@@ -1,0 +1,27 @@
+<head>
+  <title>Assets</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag 'application', media: 'all', 'data-turbo-track': 'reload' %>
+  <%= javascript_include_tag 'application', 'data-turbo-track': 'reload' %>
+
+  <!-- Add Bootstrap CSS CDN -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<h1 class="display-4 mb-4">Assets</h1>
+
+<div class="container">
+  <% @assets.each do |asset| %>
+    <div class="card mb-4">
+      <div class="card-header">
+        <small class="text-muted"><%= asset.category %></small>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title"><%= asset.name %></h5>
+        <p class="card-text"><%= asset.description %></p>
+      </div>
+    </div>
+  <% end %>
+</div>

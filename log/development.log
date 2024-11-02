@@ -1,0 +1,444 @@
+Started GET "/" for 127.0.0.1 at 2024-10-16 19:46:20 -0700
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/conno/.rbenv/versions/3.2.5/lib/ruby/gems/3.2.0/gems/railties-7.2.1.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/conno/.rbenv/versions/3.2.5/lib/ruby/gems/3.2.0/gems/railties-7.2.1.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.3ms | GC: 0.0ms)
+Completed 200 OK in 12ms (Views: 3.3ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/" for 127.0.0.1 at 2024-10-16 19:53:38 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/conno/.rbenv/versions/3.2.5/lib/ruby/gems/3.2.0/gems/railties-7.2.1.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/conno/.rbenv/versions/3.2.5/lib/ruby/gems/3.2.0/gems/railties-7.2.1.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.4ms | GC: 0.0ms)
+Completed 200 OK in 6ms (Views: 1.9ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.1ms)
+
+
+Started GET "/" for 127.0.0.1 at 2024-10-16 19:54:22 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/conno/.rbenv/versions/3.2.5/lib/ruby/gems/3.2.0/gems/railties-7.2.1.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/conno/.rbenv/versions/3.2.5/lib/ruby/gems/3.2.0/gems/railties-7.2.1.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.3ms | GC: 0.0ms)
+Completed 200 OK in 5ms (Views: 1.3ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.1ms)
+
+
+Started GET "/" for 127.0.0.1 at 2024-10-19 17:16:11 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/conno/.rbenv/versions/3.2.5/lib/ruby/gems/3.2.0/gems/railties-7.2.1.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/conno/.rbenv/versions/3.2.5/lib/ruby/gems/3.2.0/gems/railties-7.2.1.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.5ms | GC: 0.0ms)
+Completed 200 OK in 8ms (Views: 3.5ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/" for 127.0.0.1 at 2024-10-19 17:22:51 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/conno/.rbenv/versions/3.2.5/lib/ruby/gems/3.2.0/gems/railties-7.2.1.1/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/conno/.rbenv/versions/3.2.5/lib/ruby/gems/3.2.0/gems/railties-7.2.1.1/lib/rails/templates/rails/welcome/index.html.erb (Duration: 0.4ms | GC: 0.0ms)
+Completed 200 OK in 6ms (Views: 1.9ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/articles" for ::1 at 2024-10-19 17:22:56 -0700
+Processing by ArticlesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering articles/index.html.erb within layouts/application
+  Rendered articles/index.html.erb within layouts/application (Duration: 0.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 718.2ms | GC: 53.5ms)
+Completed 200 OK in 737ms (Views: 719.3ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 54.4ms)
+
+
+Started GET "/manifest.json" for ::1 at 2024-10-19 17:22:57 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/articles" for 127.0.0.1 at 2024-10-19 17:23:08 -0700
+Processing by ArticlesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering articles/index.html.erb within layouts/application
+  Rendered articles/index.html.erb within layouts/application (Duration: 0.3ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 4.8ms | GC: 0.0ms)
+Completed 200 OK in 6ms (Views: 5.5ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-19 17:23:08 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-19 17:24:08 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by ArticlesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering articles/index.html.erb within layouts/application
+  Rendered articles/index.html.erb within layouts/application (Duration: 0.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 30.1ms | GC: 3.4ms)
+Completed 200 OK in 39ms (Views: 32.1ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 3.8ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-19 17:24:09 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-19 17:36:23 -0700
+Processing by ArticlesController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering articles/index.html.erb within layouts/application
+  Rendered articles/index.html.erb within layouts/application (Duration: 0.1ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 4.2ms | GC: 0.0ms)
+Completed 200 OK in 6ms (Views: 5.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-19 17:36:23 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::InternalMetadata Create (0.6ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ('environment', 'development', '2024-10-20 00:46:17.715688', '2024-10-20 00:46:17.715689') RETURNING "key"[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateAssets (20241020004208)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "assets" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "description" varchar, "category" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20241020004208') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mAsset Create (1.1ms)[0m  [1m[32mINSERT INTO "assets" ("name", "description", "category", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "Honda Pilot"], ["description", "2020 white - like new"], ["category", "automobile"], ["created_at", "2024-10-20 00:48:55.110549"], ["updated_at", "2024-10-20 00:48:55.110549"]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mAsset Create (0.5ms)[0m  [1m[32mINSERT INTO "assets" ("name", "description", "category", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "Rental Unit - Maui"], ["description", ""], ["category", "property"], ["created_at", "2024-10-20 00:48:55.113110"], ["updated_at", "2024-10-20 00:48:55.113110"]]
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[36mAsset Create (0.5ms)[0m  [1m[32mINSERT INTO "assets" ("name", "description", "category", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "Main House"], ["description", ""], ["category", "property"], ["created_at", "2024-10-20 00:48:55.114534"], ["updated_at", "2024-10-20 00:48:55.114534"]]
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+Started GET "/" for 127.0.0.1 at 2024-10-19 17:57:22 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.8ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:3
+  Rendered assets/index.html.erb within layouts/application (Duration: 5.1ms | GC: 0.5ms)
+  Rendered layout layouts/application.html.erb (Duration: 57.8ms | GC: 23.8ms)
+Completed 200 OK in 79ms (Views: 59.3ms | ActiveRecord: 1.0ms (1 query, 0 cached) | GC: 24.9ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-19 17:57:22 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-19 18:05:46 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.8ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:4
+  Rendered assets/index.html.erb within layouts/application (Duration: 5.5ms | GC: 0.8ms)
+  Rendered layout layouts/application.html.erb (Duration: 65.0ms | GC: 24.0ms)
+Completed 200 OK in 82ms (Views: 66.0ms | ActiveRecord: 1.0ms (1 query, 0 cached) | GC: 24.9ms)
+
+
+  
+ActionController::RoutingError (No route matches [GET] "/assets/bootstrap"):
+  
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-19 18:05:47 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 12:32:56 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.7ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:4
+  Rendered assets/index.html.erb within layouts/application (Duration: 5.0ms | GC: 0.5ms)
+  Rendered layout layouts/application.html.erb (Duration: 51.7ms | GC: 24.0ms)
+Completed 200 OK in 69ms (Views: 52.4ms | ActiveRecord: 1.2ms (1 query, 0 cached) | GC: 24.8ms)
+
+
+  
+ActionController::RoutingError (No route matches [GET] "/assets/bootstrap"):
+  
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 12:32:56 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 12:36:17 -0700
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.2ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:4
+  Rendered assets/index.html.erb within layouts/application (Duration: 3.6ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 5.7ms | GC: 0.0ms)
+Completed 200 OK in 8ms (Views: 6.1ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  
+ActionController::RoutingError (No route matches [GET] "/assets/bootstrap"):
+  
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 12:36:18 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 12:39:41 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.8ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:4
+  Rendered assets/index.html.erb within layouts/application (Duration: 5.3ms | GC: 0.7ms)
+  Rendered layout layouts/application.html.erb (Duration: 49.6ms | GC: 22.9ms)
+Completed 200 OK in 69ms (Views: 50.8ms | ActiveRecord: 1.0ms (1 query, 0 cached) | GC: 23.7ms)
+
+
+  
+ActionController::RoutingError (No route matches [GET] "/assets/bootstrap"):
+  
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 12:39:42 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 12:46:52 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.8ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:4
+  Rendered assets/index.html.erb within layouts/application (Duration: 5.8ms | GC: 0.6ms)
+  Rendered layout layouts/application.html.erb (Duration: 808.7ms | GC: 46.1ms)
+Completed 200 OK in 830ms (Views: 809.8ms | ActiveRecord: 1.2ms (1 query, 0 cached) | GC: 46.7ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 12:46:53 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 12:48:58 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.5ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:4
+  Rendered assets/index.html.erb within layouts/application (Duration: 4.8ms | GC: 0.5ms)
+  Rendered layout layouts/application.html.erb (Duration: 64.5ms | GC: 24.9ms)
+Completed 200 OK in 89ms (Views: 65.9ms | ActiveRecord: 0.7ms (1 query, 0 cached) | GC: 32.7ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 12:48:58 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 12:49:38 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.6ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:4
+  Rendered assets/index.html.erb within layouts/application (Duration: 4.8ms | GC: 0.5ms)
+  Rendered layout layouts/application.html.erb (Duration: 55.5ms | GC: 24.1ms)
+Completed 200 OK in 78ms (Views: 56.8ms | ActiveRecord: 0.8ms (1 query, 0 cached) | GC: 31.5ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 12:49:39 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 12:49:44 -0700
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.2ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:4
+  Rendered assets/index.html.erb within layouts/application (Duration: 1.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 4.0ms | GC: 0.0ms)
+Completed 200 OK in 6ms (Views: 4.3ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 12:49:44 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 12:50:36 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.8ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:6
+  Rendered assets/index.html.erb within layouts/application (Duration: 5.2ms | GC: 0.7ms)
+  Rendered layout layouts/application.html.erb (Duration: 49.1ms | GC: 11.1ms)
+Completed 200 OK in 72ms (Views: 50.5ms | ActiveRecord: 1.0ms (1 query, 0 cached) | GC: 18.8ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 12:50:36 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 12:52:50 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.6ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:4
+  Rendered assets/index.html.erb within layouts/application (Duration: 5.1ms | GC: 0.5ms)
+  Rendered layout layouts/application.html.erb (Duration: 35.0ms | GC: 7.1ms)
+Completed 200 OK in 60ms (Views: 36.4ms | ActiveRecord: 0.8ms (1 query, 0 cached) | GC: 13.6ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 12:52:50 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 12:55:20 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.6ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:16
+  Rendered assets/index.html.erb within layouts/application (Duration: 26.1ms | GC: 2.8ms)
+  Rendered layout layouts/application.html.erb (Duration: 53.4ms | GC: 24.2ms)
+Completed 200 OK in 82ms (Views: 55.1ms | ActiveRecord: 0.8ms (1 query, 0 cached) | GC: 32.4ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 12:55:20 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 12:56:41 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.6ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:16
+  Rendered assets/index.html.erb within layouts/application (Duration: 24.3ms | GC: 3.4ms)
+  Rendered layout layouts/application.html.erb (Duration: 52.4ms | GC: 24.6ms)
+Completed 200 OK in 74ms (Views: 53.6ms | ActiveRecord: 0.8ms (1 query, 0 cached) | GC: 31.4ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 12:56:41 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 12:57:05 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.6ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:16
+  Rendered assets/index.html.erb within layouts/application (Duration: 25.0ms | GC: 3.3ms)
+  Rendered layout layouts/application.html.erb (Duration: 52.1ms | GC: 24.4ms)
+Completed 200 OK in 75ms (Views: 53.4ms | ActiveRecord: 0.8ms (1 query, 0 cached) | GC: 31.6ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 12:57:05 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 12:58:36 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.6ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:16
+  Rendered assets/index.html.erb within layouts/application (Duration: 32.2ms | GC: 3.4ms)
+  Rendered layout layouts/application.html.erb (Duration: 59.7ms | GC: 24.5ms)
+Completed 200 OK in 82ms (Views: 60.9ms | ActiveRecord: 0.8ms (1 query, 0 cached) | GC: 31.4ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 12:58:36 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 13:12:13 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (1.3ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:16
+  Rendered assets/index.html.erb within layouts/application (Duration: 25.1ms | GC: 2.6ms)
+  Rendered layout layouts/application.html.erb (Duration: 52.4ms | GC: 23.4ms)
+Completed 200 OK in 75ms (Views: 53.0ms | ActiveRecord: 1.5ms (1 query, 0 cached) | GC: 30.4ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 13:12:13 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 13:16:19 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.8ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:16
+  Rendered assets/index.html.erb within layouts/application (Duration: 26.4ms | GC: 2.6ms)
+  Rendered layout layouts/application.html.erb (Duration: 55.4ms | GC: 24.7ms)
+Completed 200 OK in 76ms (Views: 56.5ms | ActiveRecord: 1.2ms (1 query, 0 cached) | GC: 25.7ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 13:16:19 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 13:32:47 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.8ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:16
+  Rendered assets/index.html.erb within layouts/application (Duration: 24.8ms | GC: 2.6ms)
+  Rendered layout layouts/application.html.erb (Duration: 53.7ms | GC: 24.9ms)
+Completed 200 OK in 76ms (Views: 54.8ms | ActiveRecord: 1.0ms (1 query, 0 cached) | GC: 31.6ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 13:32:47 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-20 13:37:15 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (2.2ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:16
+  Rendered assets/index.html.erb within layouts/application (Duration: 27.8ms | GC: 3.3ms)
+  Rendered layout layouts/application.html.erb (Duration: 58.3ms | GC: 25.7ms)
+Completed 200 OK in 82ms (Views: 58.4ms | ActiveRecord: 2.4ms (1 query, 0 cached) | GC: 32.8ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-20 13:37:15 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
+Started GET "/" for 127.0.0.1 at 2024-10-21 13:59:55 -0700
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (0.9ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:16
+  Rendered assets/index.html.erb within layouts/application (Duration: 27.7ms | GC: 3.1ms)
+  Rendered layout layouts/application.html.erb (Duration: 56.0ms | GC: 24.3ms)
+Completed 200 OK in 82ms (Views: 57.6ms | ActiveRecord: 1.1ms (1 query, 0 cached) | GC: 31.7ms)
+
+
+Started GET "/manifest.json" for 127.0.0.1 at 2024-10-21 13:59:56 -0700
+  
+ActionController::RoutingError (No route matches [GET] "/manifest.json"):
+  
