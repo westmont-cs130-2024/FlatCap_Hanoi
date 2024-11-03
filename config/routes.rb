@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+
   # API routes for the React frontend
   namespace :api do
     namespace :v1 do
@@ -17,5 +18,6 @@ Rails.application.routes.draw do
     end
   end
 
-  root "assets#index"
+  root "home#index"
+  get "/assets", to: "assets#index"
 end
