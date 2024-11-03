@@ -20,6 +20,9 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+# Add CORS support
+gem "rack-cors"
+
 gem 'bootstrap', '~> 5.3.0'
 gem 'sassc-rails', '>= 2.1.0'
 # Use Redis adapter to run Action Cable in production
