@@ -1,6 +1,6 @@
 # app/models/asset.rb
 class Asset < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, optional: true
 
   # Define enum for `status`
   enum :status, { inventory: 0, value: 1, marshal: 2, administer: 3 }
@@ -35,7 +35,7 @@ class Asset < ApplicationRecord
     errors.add(:acquisition_date, "must be a valid date") if acquisition_date.present? && !acquisition_date.is_a?(Date)
   end
 
-  # Set initial status to `inventory`
+  # Set initial status to `inventory` by default
   def set_default_status
     self.status ||= :inventory
   end
