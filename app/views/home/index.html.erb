@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, width=device-width">
+    <link rel="stylesheet" href="<%= asset_path('home.css') %>">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap">
+    <title>Home Page</title>
+</head>
+<body>
+    <div class="home-page">
+        <header class="header">
+            <div class="logo">
+                <img src="<%= asset_path('hanoiIcon.svg') %>" alt="Logo" class="logo-img">
+                <div class="hanoi">hanoi</div>
+            </div>
+            <div class="user-info">
+                <img src="<%= asset_path('Avatar.svg') %>" alt="Avatar" class="avatar">
+                <div class="username">Chief Choctaw</div>
+            </div>
+        </header>
+        <div class="secondary-header">
+            <nav class="secondary-nav">
+                <ul class="secondary-nav-list">
+                    <li><a href="<%= root_path %>" class="secondary-nav-item">Home</a></li>
+                    <li><a href="<%= assets_path %>" class="secondary-nav-item">Assets</a></li>
+                    <li><a href="#" class="secondary-nav-item">Debts</a></li>
+                    <li><a href="#" class="secondary-nav-item">Documents</a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="progress-bar">
+        <div class="progress-bar-inner" style="width: 60%;"></div> <!-- Example width for demonstration -->
+        </div>
+
+        <div class="upcoming-tasks task-container">
+            <h2>Upcoming Tasks</h2>
+            <div class="upcoming-task-button">Open an estate bank account <span class="task-date">7/12/25</span></div>
+            <div class="upcoming-task-button">Pay debts and taxes <span class="task-date">7/12/25</span></div>
+            <div class="upcoming-task-button">File final tax returns <span class="task-date">7/12/25</span></div>
+            <div class="upcoming-task-button">Distribute assets to beneficiaries <span class="task-date">7/12/25</span></div>
+        </div>
+
+        <div class="recently-completed task-container">
+            <h2>Recently Completed</h2>
+            <div class="completed-task-button">Obtain death certificate copies <span class="completion-date">Completed 7/12/25</span></div>
+            <div class="completed-task-button">Notify beneficiaries and creditors <span class="completion-date">Completed 7/12/25</span></div>
+            <div class="completed-task-button">Create an estate inventory <span class="completion-date">Completed 7/12/25</span></div>
+            <div class="completed-task-button">Locate the will (if any) <span class="completion-date">Completed 7/12/25</span></div>
+            <div class="completed-task-button">Get appointed as executor/administrator <span class="completion-date">Completed 7/12/25</span></div>
+        </div>
+
+    </div>
+</body>
+</html>

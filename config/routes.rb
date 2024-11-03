@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  root "assets#index"
+  # Set the root path to home#index, which will render the home page
+  root "home#index"
+
+  # Route for the assets page
   get "/assets", to: "assets#index"
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Define other routes as needed
 end
