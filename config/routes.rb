@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  get "initial/create"
+  get "initial/log"
+  get "intitial/log"
 
   # API routes for the React frontend
   namespace :api do
