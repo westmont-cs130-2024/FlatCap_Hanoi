@@ -4770,34 +4770,576 @@ Processing by Api::V1::AssetsController#index as HTML
 Completed 200 OK in 1ms (Views: 0.8ms | ActiveRecord: 0.0ms (1 query, 0 cached) | GC: 0.0ms)
 
 
-  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
-  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
-Migrating to CreateUserProfiles (20241104021105)
+Started GET "/" for ::1 at 2024-11-03 15:02:37 -0800
+Processing by AssetsController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering assets/index.html.erb within layouts/application
+  [1m[36mAsset Load (2.2ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/views/assets/index.html.erb:23
+  Rendered assets/index.html.erb within layouts/application (Duration: 15.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 16.3ms | GC: 0.0ms)
+Completed 200 OK in 34ms (Views: 20.1ms | ActiveRecord: 2.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/assets" for ::1 at 2024-11-03 15:04:56 -0800
+Processing by Api::V1::AssetsController#create as HTML
+  Parameters: {"name"=>"a", "category"=>"a", "acquisition_date"=>"2024-11-03", "location"=>"a", "description"=>"a", "asset"=>{"name"=>"a", "description"=>"a", "category"=>"a", "acquisition_date"=>"2024-11-03", "location"=>"a"}}
   [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
-  [1m[35m (1.2ms)[0m  [1m[35mCREATE TABLE "user_profiles" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "firstName" varchar, "lastName" varchar, "email" varchar, "tele" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
-  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20241104021105') RETURNING "version"[0m
-  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
-  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:4:in `create'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:4:in `create'
+Completed 422 Unprocessable Content in 5ms (Views: 0.1ms | ActiveRecord: 1.5ms (0 queries, 0 cached) | GC: 0.4ms)
+
+
   [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
   [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
-Migrating to CreateUserProfiles (20241104030236)
+Migrating to MakeUserIdOptionalInAssets (20241103230915)
   [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
-  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "user_profiles" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "firstName" varchar, "lastName" varchar, "email" varchar, "tel" varchar, "password" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
-  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
-  [1m[36mActiveRecord::InternalMetadata Load (0.4ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TEMPORARY TABLE "aassets" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "description" varchar, "category" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "status" integer, "acquisition_date" date, "location" varchar, "user_id" integer)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "tindex_aassets_on_user_id" ON "aassets" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "aassets" ("id","name","description","category","created_at","updated_at","status","acquisition_date","location","user_id")
+                     SELECT "id","name","description","category","created_at","updated_at","status","acquisition_date","location","user_id" FROM "assets"[0m
+  [1m[35m (0.2ms)[0m  [1m[35mDROP TABLE "assets"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TABLE "assets" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "description" varchar, "category" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL, "status" integer, "acquisition_date" date, "location" varchar, "user_id" integer, CONSTRAINT "fk_rails_590236dc2e"
+FOREIGN KEY ("user_id")
+  REFERENCES "users" ("id")
+)[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE INDEX "index_assets_on_user_id" ON "assets" ("user_id")[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "assets" ("id","name","description","category","created_at","updated_at","status","acquisition_date","location","user_id")
+                     SELECT "id","name","description","category","created_at","updated_at","status","acquisition_date","location","user_id" FROM "aassets"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "aassets"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20241103230915') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
   [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
-Migrating to CreateUserProfiles (20241104030236)
+Started POST "/api/v1/assets" for ::1 at 2024-11-03 15:09:45 -0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::AssetsController#create as HTML
+  Parameters: {"name"=>"a", "category"=>"a", "acquisition_date"=>"2024-11-03", "location"=>"a", "description"=>"a", "status"=>"inventory", "asset"=>{"name"=>"a", "description"=>"a", "category"=>"a", "status"=>"inventory", "acquisition_date"=>"2024-11-03", "location"=>"a"}}
+[31mUnpermitted parameter: :status. Context: { controller: Api::V1::AssetsController, action: create, request: #<ActionDispatch::Request:0x00000001091b1b88>, params: {"name"=>"a", "category"=>"a", "acquisition_date"=>"2024-11-03", "location"=>"a", "description"=>"a", "status"=>"inventory", "controller"=>"api/v1/assets", "action"=>"create", "asset"=>{"name"=>"a", "description"=>"a", "category"=>"a", "status"=>"inventory", "acquisition_date"=>"2024-11-03", "location"=>"a"}} }[0m
+Completed 422 Unprocessable Content in 4ms (Views: 0.1ms | ActiveRecord: 0.8ms (0 queries, 0 cached) | GC: 0.2ms)
+
+
+Started POST "/api/v1/assets" for ::1 at 2024-11-03 15:10:48 -0800
+Processing by Api::V1::AssetsController#create as HTML
+  Parameters: {"name"=>"a", "category"=>"a", "acquisition_date"=>"2024-11-03", "location"=>"a", "description"=>"a", "asset"=>{"name"=>"a", "description"=>"a", "category"=>"a", "acquisition_date"=>"2024-11-03", "location"=>"a"}}
+Completed 422 Unprocessable Content in 3ms (Views: 0.2ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/assets" for ::1 at 2024-11-03 15:12:18 -0800
+Processing by Api::V1::AssetsController#create as HTML
+  Parameters: {"name"=>"a", "category"=>"a", "acquisition_date"=>"2024-11-03", "location"=>"a", "description"=>"a", "asset"=>{"name"=>"a", "description"=>"a", "category"=>"a", "acquisition_date"=>"2024-11-03", "location"=>"a"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:5:in `create'
+Completed 422 Unprocessable Content in 9ms (Views: 0.1ms | ActiveRecord: 1.1ms (1 query, 0 cached) | GC: 0.8ms)
+
+
+Started POST "/api/v1/assets" for ::1 at 2024-11-03 15:14:20 -0800
+  
+SyntaxError (/Users/school/github-classroom/cs-with-nick-n-dan/FlatCap_Hanoi/app/controllers/api/v1/assets_controller.rb:29: syntax error, unexpected `end'):
+  
+app/controllers/api/v1/assets_controller.rb:29: syntax error, unexpected `end'
+Started POST "/api/v1/assets" for ::1 at 2024-11-03 15:15:38 -0800
+Processing by Api::V1::AssetsController#create as HTML
+  Parameters: {"name"=>"a", "category"=>"a", "acquisition_date"=>"2024-11-03", "location"=>"a", "description"=>"a", "asset"=>{"name"=>"a", "description"=>"a", "category"=>"a", "acquisition_date"=>"2024-11-03", "location"=>"a"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:5:in `create'
+Asset validation errors: ["Category is not included in the list"]
+Completed 422 Unprocessable Content in 9ms (Views: 0.2ms | ActiveRecord: 1.9ms (1 query, 0 cached) | GC: 0.4ms)
+
+
+Started POST "/api/v1/assets" for ::1 at 2024-11-03 15:16:22 -0800
+Processing by Api::V1::AssetsController#create as HTML
+  Parameters: {"name"=>"a", "category"=>"Real Estate", "acquisition_date"=>"2024-11-03", "location"=>"a", "description"=>"a", "asset"=>{"name"=>"a", "description"=>"a", "category"=>"Real Estate", "acquisition_date"=>"2024-11-03", "location"=>"a"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:5:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:7:in `create'
+  [1m[36mAsset Create (1.5ms)[0m  [1m[32mINSERT INTO "assets" ("name", "description", "category", "created_at", "updated_at", "status", "acquisition_date", "location", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "a"], ["description", "a"], ["category", "Real Estate"], ["created_at", "2024-11-03 23:16:22.659875"], ["updated_at", "2024-11-03 23:16:22.659875"], ["status", 0], ["acquisition_date", "2024-11-03"], ["location", "a"], ["user_id", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:7:in `create'
+  [1m[36mTRANSACTION (0.7ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:7:in `create'
+Completed 201 Created in 12ms (Views: 0.5ms | ActiveRecord: 2.4ms (2 queries, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-03 15:16:22 -0800
+  
+AbstractController::ActionNotFound (The action 'index' could not be found for Api::V1::AssetsController):
+  
+actionpack (7.2.1.1) lib/abstract_controller/base.rb:158:in `process'
+actionview (7.2.1.1) lib/action_view/rendering.rb:40:in `process'
+actionpack (7.2.1.1) lib/action_controller/metal.rb:252:in `dispatch'
+actionpack (7.2.1.1) lib/action_controller/metal.rb:335:in `dispatch'
+actionpack (7.2.1.1) lib/action_dispatch/routing/route_set.rb:67:in `dispatch'
+actionpack (7.2.1.1) lib/action_dispatch/routing/route_set.rb:50:in `serve'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:53:in `block in serve'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:133:in `block in find_routes'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:126:in `each'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:126:in `find_routes'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:34:in `serve'
+actionpack (7.2.1.1) lib/action_dispatch/routing/route_set.rb:896:in `call'
+rack (3.1.8) lib/rack/etag.rb:29:in `call'
+rack (3.1.8) lib/rack/conditional_get.rb:31:in `call'
+rack (3.1.8) lib/rack/head.rb:15:in `call'
+activerecord (7.2.1.1) lib/active_record/migration.rb:674:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/callbacks.rb:31:in `block in call'
+activesupport (7.2.1.1) lib/active_support/callbacks.rb:101:in `run_callbacks'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/callbacks.rb:30:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/executor.rb:16:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/actionable_exceptions.rb:18:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/debug_exceptions.rb:31:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/show_exceptions.rb:32:in `call'
+railties (7.2.1.1) lib/rails/rack/logger.rb:41:in `call_app'
+railties (7.2.1.1) lib/rails/rack/logger.rb:29:in `call'
+sprockets-rails (3.5.2) lib/sprockets/rails/quiet_assets.rb:17:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/remote_ip.rb:96:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/request_id.rb:33:in `call'
+rack (3.1.8) lib/rack/runtime.rb:24:in `call'
+activesupport (7.2.1.1) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/server_timing.rb:61:in `block in call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/server_timing.rb:26:in `collect_events'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/server_timing.rb:60:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/executor.rb:16:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/static.rb:27:in `call'
+rack (3.1.8) lib/rack/sendfile.rb:114:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/host_authorization.rb:143:in `call'
+rack-cors (2.0.2) lib/rack/cors.rb:102:in `call'
+railties (7.2.1.1) lib/rails/engine.rb:535:in `call'
+puma (6.4.3) lib/puma/configuration.rb:272:in `call'
+puma (6.4.3) lib/puma/request.rb:100:in `block in handle_request'
+puma (6.4.3) lib/puma/thread_pool.rb:378:in `with_force_shutdown'
+puma (6.4.3) lib/puma/request.rb:99:in `handle_request'
+puma (6.4.3) lib/puma/server.rb:464:in `process_client'
+puma (6.4.3) lib/puma/server.rb:245:in `block in run'
+puma (6.4.3) lib/puma/thread_pool.rb:155:in `block in spawn_thread'
+Started POST "/api/v1/assets" for ::1 at 2024-11-03 15:17:21 -0800
+Processing by Api::V1::AssetsController#create as HTML
+  Parameters: {"name"=>"a", "category"=>"Other", "acquisition_date"=>"2024-11-03", "location"=>"a", "description"=>"a", "asset"=>{"name"=>"a", "description"=>"a", "category"=>"Other", "acquisition_date"=>"2024-11-03", "location"=>"a"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:11:in `create'
   [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
-  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "user_profiles" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "firstName" varchar, "lastName" varchar, "email" varchar, "tel" varchar, "password" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
-  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
-  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
-  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
-  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
-  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
-  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
-Migrating to AddPasswordToUserProfiles (20241104033038)
+  ↳ app/controllers/api/v1/assets_controller.rb:13:in `create'
+  [1m[36mAsset Create (0.5ms)[0m  [1m[32mINSERT INTO "assets" ("name", "description", "category", "created_at", "updated_at", "status", "acquisition_date", "location", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "a"], ["description", "a"], ["category", "Other"], ["created_at", "2024-11-03 23:17:21.820195"], ["updated_at", "2024-11-03 23:17:21.820195"], ["status", 0], ["acquisition_date", "2024-11-03"], ["location", "a"], ["user_id", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:13:in `create'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:13:in `create'
+Completed 201 Created in 8ms (Views: 0.2ms | ActiveRecord: 1.7ms (2 queries, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-03 15:17:21 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 1ms (Views: 0.8ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started DELETE "/api/v1/assets/5" for ::1 at 2024-11-03 15:17:48 -0800
+  
+AbstractController::ActionNotFound (The action 'destroy' could not be found for Api::V1::AssetsController):
+  
+actionpack (7.2.1.1) lib/abstract_controller/base.rb:158:in `process'
+actionview (7.2.1.1) lib/action_view/rendering.rb:40:in `process'
+actionpack (7.2.1.1) lib/action_controller/metal.rb:252:in `dispatch'
+actionpack (7.2.1.1) lib/action_controller/metal.rb:335:in `dispatch'
+actionpack (7.2.1.1) lib/action_dispatch/routing/route_set.rb:67:in `dispatch'
+actionpack (7.2.1.1) lib/action_dispatch/routing/route_set.rb:50:in `serve'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:53:in `block in serve'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:133:in `block in find_routes'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:126:in `each'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:126:in `find_routes'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:34:in `serve'
+actionpack (7.2.1.1) lib/action_dispatch/routing/route_set.rb:896:in `call'
+rack (3.1.8) lib/rack/etag.rb:29:in `call'
+rack (3.1.8) lib/rack/conditional_get.rb:43:in `call'
+rack (3.1.8) lib/rack/head.rb:15:in `call'
+activerecord (7.2.1.1) lib/active_record/migration.rb:674:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/callbacks.rb:31:in `block in call'
+activesupport (7.2.1.1) lib/active_support/callbacks.rb:101:in `run_callbacks'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/callbacks.rb:30:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/executor.rb:16:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/actionable_exceptions.rb:18:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/debug_exceptions.rb:31:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/show_exceptions.rb:32:in `call'
+railties (7.2.1.1) lib/rails/rack/logger.rb:41:in `call_app'
+railties (7.2.1.1) lib/rails/rack/logger.rb:29:in `call'
+sprockets-rails (3.5.2) lib/sprockets/rails/quiet_assets.rb:17:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/remote_ip.rb:96:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/request_id.rb:33:in `call'
+rack (3.1.8) lib/rack/runtime.rb:24:in `call'
+activesupport (7.2.1.1) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/server_timing.rb:61:in `block in call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/server_timing.rb:26:in `collect_events'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/server_timing.rb:60:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/executor.rb:16:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/static.rb:27:in `call'
+rack (3.1.8) lib/rack/sendfile.rb:114:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/host_authorization.rb:143:in `call'
+rack-cors (2.0.2) lib/rack/cors.rb:102:in `call'
+railties (7.2.1.1) lib/rails/engine.rb:535:in `call'
+puma (6.4.3) lib/puma/configuration.rb:272:in `call'
+puma (6.4.3) lib/puma/request.rb:100:in `block in handle_request'
+puma (6.4.3) lib/puma/thread_pool.rb:378:in `with_force_shutdown'
+puma (6.4.3) lib/puma/request.rb:99:in `handle_request'
+puma (6.4.3) lib/puma/server.rb:464:in `process_client'
+puma (6.4.3) lib/puma/server.rb:245:in `block in run'
+puma (6.4.3) lib/puma/thread_pool.rb:155:in `block in spawn_thread'
+Started DELETE "/api/v1/assets/6" for ::1 at 2024-11-03 15:17:59 -0800
+  
+AbstractController::ActionNotFound (The action 'destroy' could not be found for Api::V1::AssetsController):
+  
+actionpack (7.2.1.1) lib/abstract_controller/base.rb:158:in `process'
+actionview (7.2.1.1) lib/action_view/rendering.rb:40:in `process'
+actionpack (7.2.1.1) lib/action_controller/metal.rb:252:in `dispatch'
+actionpack (7.2.1.1) lib/action_controller/metal.rb:335:in `dispatch'
+actionpack (7.2.1.1) lib/action_dispatch/routing/route_set.rb:67:in `dispatch'
+actionpack (7.2.1.1) lib/action_dispatch/routing/route_set.rb:50:in `serve'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:53:in `block in serve'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:133:in `block in find_routes'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:126:in `each'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:126:in `find_routes'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:34:in `serve'
+actionpack (7.2.1.1) lib/action_dispatch/routing/route_set.rb:896:in `call'
+rack (3.1.8) lib/rack/etag.rb:29:in `call'
+rack (3.1.8) lib/rack/conditional_get.rb:43:in `call'
+rack (3.1.8) lib/rack/head.rb:15:in `call'
+activerecord (7.2.1.1) lib/active_record/migration.rb:674:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/callbacks.rb:31:in `block in call'
+activesupport (7.2.1.1) lib/active_support/callbacks.rb:101:in `run_callbacks'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/callbacks.rb:30:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/executor.rb:16:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/actionable_exceptions.rb:18:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/debug_exceptions.rb:31:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/show_exceptions.rb:32:in `call'
+railties (7.2.1.1) lib/rails/rack/logger.rb:41:in `call_app'
+railties (7.2.1.1) lib/rails/rack/logger.rb:29:in `call'
+sprockets-rails (3.5.2) lib/sprockets/rails/quiet_assets.rb:17:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/remote_ip.rb:96:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/request_id.rb:33:in `call'
+rack (3.1.8) lib/rack/runtime.rb:24:in `call'
+activesupport (7.2.1.1) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/server_timing.rb:61:in `block in call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/server_timing.rb:26:in `collect_events'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/server_timing.rb:60:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/executor.rb:16:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/static.rb:27:in `call'
+rack (3.1.8) lib/rack/sendfile.rb:114:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/host_authorization.rb:143:in `call'
+rack-cors (2.0.2) lib/rack/cors.rb:102:in `call'
+railties (7.2.1.1) lib/rails/engine.rb:535:in `call'
+puma (6.4.3) lib/puma/configuration.rb:272:in `call'
+puma (6.4.3) lib/puma/request.rb:100:in `block in handle_request'
+puma (6.4.3) lib/puma/thread_pool.rb:378:in `with_force_shutdown'
+puma (6.4.3) lib/puma/request.rb:99:in `handle_request'
+puma (6.4.3) lib/puma/server.rb:464:in `process_client'
+puma (6.4.3) lib/puma/server.rb:245:in `block in run'
+puma (6.4.3) lib/puma/thread_pool.rb:155:in `block in spawn_thread'
+Started DELETE "/api/v1/assets/3" for ::1 at 2024-11-03 15:18:03 -0800
+  
+AbstractController::ActionNotFound (The action 'destroy' could not be found for Api::V1::AssetsController):
+  
+actionpack (7.2.1.1) lib/abstract_controller/base.rb:158:in `process'
+actionview (7.2.1.1) lib/action_view/rendering.rb:40:in `process'
+actionpack (7.2.1.1) lib/action_controller/metal.rb:252:in `dispatch'
+actionpack (7.2.1.1) lib/action_controller/metal.rb:335:in `dispatch'
+actionpack (7.2.1.1) lib/action_dispatch/routing/route_set.rb:67:in `dispatch'
+actionpack (7.2.1.1) lib/action_dispatch/routing/route_set.rb:50:in `serve'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:53:in `block in serve'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:133:in `block in find_routes'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:126:in `each'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:126:in `find_routes'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:34:in `serve'
+actionpack (7.2.1.1) lib/action_dispatch/routing/route_set.rb:896:in `call'
+rack (3.1.8) lib/rack/etag.rb:29:in `call'
+rack (3.1.8) lib/rack/conditional_get.rb:43:in `call'
+rack (3.1.8) lib/rack/head.rb:15:in `call'
+activerecord (7.2.1.1) lib/active_record/migration.rb:674:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/callbacks.rb:31:in `block in call'
+activesupport (7.2.1.1) lib/active_support/callbacks.rb:101:in `run_callbacks'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/callbacks.rb:30:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/executor.rb:16:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/actionable_exceptions.rb:18:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/debug_exceptions.rb:31:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/show_exceptions.rb:32:in `call'
+railties (7.2.1.1) lib/rails/rack/logger.rb:41:in `call_app'
+railties (7.2.1.1) lib/rails/rack/logger.rb:29:in `call'
+sprockets-rails (3.5.2) lib/sprockets/rails/quiet_assets.rb:17:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/remote_ip.rb:96:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/request_id.rb:33:in `call'
+rack (3.1.8) lib/rack/runtime.rb:24:in `call'
+activesupport (7.2.1.1) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/server_timing.rb:61:in `block in call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/server_timing.rb:26:in `collect_events'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/server_timing.rb:60:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/executor.rb:16:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/static.rb:27:in `call'
+rack (3.1.8) lib/rack/sendfile.rb:114:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/host_authorization.rb:143:in `call'
+rack-cors (2.0.2) lib/rack/cors.rb:102:in `call'
+railties (7.2.1.1) lib/rails/engine.rb:535:in `call'
+puma (6.4.3) lib/puma/configuration.rb:272:in `call'
+puma (6.4.3) lib/puma/request.rb:100:in `block in handle_request'
+puma (6.4.3) lib/puma/thread_pool.rb:378:in `with_force_shutdown'
+puma (6.4.3) lib/puma/request.rb:99:in `handle_request'
+puma (6.4.3) lib/puma/server.rb:464:in `process_client'
+puma (6.4.3) lib/puma/server.rb:245:in `block in run'
+puma (6.4.3) lib/puma/thread_pool.rb:155:in `block in spawn_thread'
+Started DELETE "/api/v1/assets/5" for ::1 at 2024-11-03 15:18:56 -0800
+Processing by Api::V1::AssetsController#destroy as HTML
+  Parameters: {"id"=>"5"}
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets" WHERE "assets"."id" = ? LIMIT ?[0m  [["id", 5], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:24:in `destroy'
   [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
-  [1m[35m (1.7ms)[0m  [1m[35mALTER TABLE "user_profiles" ADD "password" varchar[0m
-  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20241104033038') RETURNING "version"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+  [1m[36mAsset Destroy (0.4ms)[0m  [1m[31mDELETE FROM "assets" WHERE "assets"."id" = ?[0m  [["id", 5]]
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+Completed 200 OK in 10ms (Views: 0.1ms | ActiveRecord: 1.4ms (2 queries, 0 cached) | GC: 0.5ms)
+
+
+Started POST "/api/v1/assets" for ::1 at 2024-11-03 15:19:11 -0800
+Processing by Api::V1::AssetsController#create as HTML
+  Parameters: {"name"=>"ab", "category"=>"Other", "acquisition_date"=>"2024-11-03", "location"=>"a", "description"=>"a", "asset"=>{"name"=>"ab", "description"=>"a", "category"=>"Other", "acquisition_date"=>"2024-11-03", "location"=>"a"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:12:in `create'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:14:in `create'
+  [1m[36mAsset Create (0.7ms)[0m  [1m[32mINSERT INTO "assets" ("name", "description", "category", "created_at", "updated_at", "status", "acquisition_date", "location", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "ab"], ["description", "a"], ["category", "Other"], ["created_at", "2024-11-03 23:19:11.482329"], ["updated_at", "2024-11-03 23:19:11.482329"], ["status", 0], ["acquisition_date", "2024-11-03"], ["location", "a"], ["user_id", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:14:in `create'
   [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
-  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:14:in `create'
+Completed 201 Created in 13ms (Views: 0.4ms | ActiveRecord: 1.3ms (2 queries, 0 cached) | GC: 0.2ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-03 15:19:11 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.2ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started DELETE "/api/v1/assets/7" for ::1 at 2024-11-03 15:19:15 -0800
+Processing by Api::V1::AssetsController#destroy as HTML
+  Parameters: {"id"=>"7"}
+  [1m[36mAsset Load (0.2ms)[0m  [1m[34mSELECT "assets".* FROM "assets" WHERE "assets"."id" = ? LIMIT ?[0m  [["id", 7], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:24:in `destroy'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+  [1m[36mAsset Destroy (1.0ms)[0m  [1m[31mDELETE FROM "assets" WHERE "assets"."id" = ?[0m  [["id", 7]]
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+Completed 200 OK in 5ms (Views: 0.2ms | ActiveRecord: 1.3ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/assets" for ::1 at 2024-11-03 15:19:46 -0800
+Processing by Api::V1::AssetsController#create as HTML
+  Parameters: {"name"=>"ab", "category"=>"Other", "acquisition_date"=>"2024-11-03", "location"=>"a", "description"=>"a", "status"=>"inventory", "asset"=>{"name"=>"ab", "description"=>"a", "category"=>"Other", "status"=>"inventory", "acquisition_date"=>"2024-11-03", "location"=>"a"}}
+[31mUnpermitted parameter: :status. Context: { controller: Api::V1::AssetsController, action: create, request: #<ActionDispatch::Request:0x0000000109791878>, params: {"name"=>"ab", "category"=>"Other", "acquisition_date"=>"2024-11-03", "location"=>"a", "description"=>"a", "status"=>"inventory", "controller"=>"api/v1/assets", "action"=>"create", "asset"=>{"name"=>"ab", "description"=>"a", "category"=>"Other", "status"=>"inventory", "acquisition_date"=>"2024-11-03", "location"=>"a"}} }[0m
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:12:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:14:in `create'
+  [1m[36mAsset Create (1.6ms)[0m  [1m[32mINSERT INTO "assets" ("name", "description", "category", "created_at", "updated_at", "status", "acquisition_date", "location", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "ab"], ["description", "a"], ["category", "Other"], ["created_at", "2024-11-03 23:19:46.500069"], ["updated_at", "2024-11-03 23:19:46.500069"], ["status", 0], ["acquisition_date", "2024-11-03"], ["location", "a"], ["user_id", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:14:in `create'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:14:in `create'
+Completed 201 Created in 8ms (Views: 0.3ms | ActiveRecord: 2.2ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-03 15:19:46 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.7ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started DELETE "/api/v1/assets/8" for ::1 at 2024-11-03 15:24:03 -0800
+Processing by Api::V1::AssetsController#destroy as HTML
+  Parameters: {"id"=>"8"}
+  [1m[36mAsset Load (0.6ms)[0m  [1m[34mSELECT "assets".* FROM "assets" WHERE "assets"."id" = ? LIMIT ?[0m  [["id", 8], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:24:in `destroy'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+  [1m[36mAsset Destroy (0.7ms)[0m  [1m[31mDELETE FROM "assets" WHERE "assets"."id" = ?[0m  [["id", 8]]
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+Completed 200 OK in 8ms (Views: 0.3ms | ActiveRecord: 1.8ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/assets" for ::1 at 2024-11-03 15:24:19 -0800
+Processing by Api::V1::AssetsController#create as HTML
+  Parameters: {"name"=>"a", "category"=>"Real Estate", "acquisition_date"=>"2024-11-03", "location"=>"a", "description"=>"a", "asset"=>{"name"=>"a", "description"=>"a", "category"=>"Real Estate", "acquisition_date"=>"2024-11-03", "location"=>"a"}}
+  [1m[36mUser Load (1.1ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:12:in `create'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:14:in `create'
+  [1m[36mAsset Create (10.0ms)[0m  [1m[32mINSERT INTO "assets" ("name", "description", "category", "created_at", "updated_at", "status", "acquisition_date", "location", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "a"], ["description", "a"], ["category", "Real Estate"], ["created_at", "2024-11-03 23:24:19.489507"], ["updated_at", "2024-11-03 23:24:19.489507"], ["status", 0], ["acquisition_date", "2024-11-03"], ["location", "a"], ["user_id", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:14:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:14:in `create'
+Completed 201 Created in 35ms (Views: 0.6ms | ActiveRecord: 11.2ms (2 queries, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-03 15:24:19 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 6ms (Views: 4.3ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-03 15:25:06 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 1ms (Views: 0.9ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-03 15:28:19 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.4ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 8ms (Views: 4.7ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 1.0ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-03 15:28:25 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.2ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 4ms (Views: 2.4ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-03 15:28:34 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.4ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 7ms (Views: 4.6ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-03 15:31:05 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.3ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 11ms (Views: 8.3ms | ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.7ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-03 15:31:05 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.6ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started PUT "/api/v1/assets/4" for ::1 at 2024-11-03 15:31:16 -0800
+  
+AbstractController::ActionNotFound (The action 'update' could not be found for Api::V1::AssetsController):
+  
+actionpack (7.2.1.1) lib/abstract_controller/base.rb:158:in `process'
+actionview (7.2.1.1) lib/action_view/rendering.rb:40:in `process'
+actionpack (7.2.1.1) lib/action_controller/metal.rb:252:in `dispatch'
+actionpack (7.2.1.1) lib/action_controller/metal.rb:335:in `dispatch'
+actionpack (7.2.1.1) lib/action_dispatch/routing/route_set.rb:67:in `dispatch'
+actionpack (7.2.1.1) lib/action_dispatch/routing/route_set.rb:50:in `serve'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:53:in `block in serve'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:133:in `block in find_routes'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:126:in `each'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:126:in `find_routes'
+actionpack (7.2.1.1) lib/action_dispatch/journey/router.rb:34:in `serve'
+actionpack (7.2.1.1) lib/action_dispatch/routing/route_set.rb:896:in `call'
+rack (3.1.8) lib/rack/etag.rb:29:in `call'
+rack (3.1.8) lib/rack/conditional_get.rb:43:in `call'
+rack (3.1.8) lib/rack/head.rb:15:in `call'
+activerecord (7.2.1.1) lib/active_record/migration.rb:674:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/callbacks.rb:31:in `block in call'
+activesupport (7.2.1.1) lib/active_support/callbacks.rb:101:in `run_callbacks'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/callbacks.rb:30:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/executor.rb:16:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/actionable_exceptions.rb:18:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/debug_exceptions.rb:31:in `call'
+web-console (4.2.1) lib/web_console/middleware.rb:132:in `call_app'
+web-console (4.2.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `catch'
+web-console (4.2.1) lib/web_console/middleware.rb:17:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/show_exceptions.rb:32:in `call'
+railties (7.2.1.1) lib/rails/rack/logger.rb:41:in `call_app'
+railties (7.2.1.1) lib/rails/rack/logger.rb:29:in `call'
+sprockets-rails (3.5.2) lib/sprockets/rails/quiet_assets.rb:17:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/remote_ip.rb:96:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/request_id.rb:33:in `call'
+rack (3.1.8) lib/rack/runtime.rb:24:in `call'
+activesupport (7.2.1.1) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/server_timing.rb:61:in `block in call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/server_timing.rb:26:in `collect_events'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/server_timing.rb:60:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/executor.rb:16:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/static.rb:27:in `call'
+rack (3.1.8) lib/rack/sendfile.rb:114:in `call'
+actionpack (7.2.1.1) lib/action_dispatch/middleware/host_authorization.rb:143:in `call'
+rack-cors (2.0.2) lib/rack/cors.rb:102:in `call'
+railties (7.2.1.1) lib/rails/engine.rb:535:in `call'
+puma (6.4.3) lib/puma/configuration.rb:272:in `call'
+puma (6.4.3) lib/puma/request.rb:100:in `block in handle_request'
+puma (6.4.3) lib/puma/thread_pool.rb:378:in `with_force_shutdown'
+puma (6.4.3) lib/puma/request.rb:99:in `handle_request'
+puma (6.4.3) lib/puma/server.rb:464:in `process_client'
+puma (6.4.3) lib/puma/server.rb:245:in `block in run'
+puma (6.4.3) lib/puma/thread_pool.rb:155:in `block in spawn_thread'
+Started PUT "/api/v1/assets/3" for ::1 at 2024-11-03 15:32:26 -0800
+Processing by Api::V1::AssetsController#update as HTML
+  Parameters: {"name"=>"Main House", "category"=>"property", "acquisition_date"=>nil, "location"=>nil, "description"=>"ye", "id"=>"3", "asset"=>{"name"=>"Main House", "description"=>"ye", "category"=>"property", "acquisition_date"=>nil, "location"=>nil}}
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets" WHERE "assets"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:34:in `update'
+Completed 422 Unprocessable Content in 6ms (Views: 0.1ms | ActiveRecord: 1.2ms (1 query, 0 cached) | GC: 2.0ms)
+
+
+Started PUT "/api/v1/assets/3" for ::1 at 2024-11-03 15:32:36 -0800
+Processing by Api::V1::AssetsController#update as HTML
+  Parameters: {"name"=>"Main House", "category"=>"Real Estate", "acquisition_date"=>nil, "location"=>nil, "description"=>"ye", "id"=>"3", "asset"=>{"name"=>"Main House", "description"=>"ye", "category"=>"Real Estate", "acquisition_date"=>nil, "location"=>nil}}
+  [1m[36mAsset Load (0.2ms)[0m  [1m[34mSELECT "assets".* FROM "assets" WHERE "assets"."id" = ? LIMIT ?[0m  [["id", 3], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:34:in `update'
+Completed 422 Unprocessable Content in 6ms (Views: 0.2ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.6ms)
+
+
+Started PUT "/api/v1/assets/4" for ::1 at 2024-11-03 15:32:44 -0800
+Processing by Api::V1::AssetsController#update as HTML
+  Parameters: {"name"=>"Sample Asset", "category"=>"Real Estate", "acquisition_date"=>"2021-06-15", "location"=>"4567 Sample Ave", "description"=>"This is a sample asset linked to Dan Shank and Nick.", "id"=>"4", "asset"=>{"name"=>"Sample Asset", "description"=>"This is a sample asset linked to Dan Shank and Nick.", "category"=>"Real Estate", "acquisition_date"=>"2021-06-15", "location"=>"4567 Sample Ave"}}
+  [1m[36mAsset Load (0.3ms)[0m  [1m[34mSELECT "assets".* FROM "assets" WHERE "assets"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:34:in `update'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:35:in `update'
+  [1m[36mAsset Update (1.6ms)[0m  [1m[33mUPDATE "assets" SET "description" = ?, "updated_at" = ? WHERE "assets"."id" = ?[0m  [["description", "This is a sample asset linked to Dan Shank and Nick."], ["updated_at", "2024-11-03 23:32:44.428905"], ["id", 4]]
+  ↳ app/controllers/api/v1/assets_controller.rb:35:in `update'
+  [1m[36mTRANSACTION (0.6ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:35:in `update'
+Completed 200 OK in 12ms (Views: 0.5ms | ActiveRecord: 2.4ms (2 queries, 0 cached) | GC: 0.4ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-03 15:32:44 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.7ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.2ms)
+
+
