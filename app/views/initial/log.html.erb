@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hanoi - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #F5F5F5;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            max-width: 400px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(123, 107, 141, 0.15);
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #7B6B8D;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #5D5D5D;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #5D5D5D;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 46px;
+            padding: 0 16px;
+            border: 2px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #7B6B8D;
+        }
+
+        button {
+            width: 100%;
+            height: 46px;
+            background: #7B6B8D;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background: #9B8BA5;
+        }
+
+        .helper-text {
+            text-align: center;
+            margin-top: 24px;
+            color: #5D5D5D;
+        }
+
+        .helper-text a {
+            color: #7B6B8D;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .helper-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <div class="title">Hanoi</div>
+            <div class="subtitle">Sign in to your account</div>
+        </div>
+
+        <%= form_for :session do |f| %>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" placeholder="Enter your email">
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" placeholder="Enter your password">
+            </div>
+
+            <button type="submit">Sign In</button>
+
+            <div class="helper-text">
+                Don't have an account? <%= link_to "Create One", "create.html.erb" %>
+            </div>
+        <% end %>
+    </div>
+</body>
+</html>
