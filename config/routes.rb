@@ -8,16 +8,11 @@ Rails.application.routes.draw do
           patch :update_status  # API route for updating the asset's status
         end
       end
+
+      # User registration and sign-in routes
+      resources :users, only: [:create]
+      post 'users/sign_in', to: 'users#sign_in'
     end
   end
 
-  # Web routes for your existing Rails views
-  resources :assets, only: [:index, :create, :destroy] do
-    member do
-      patch :update_status  # Web route for updating the asset's status
-    end
-  end
-
-  root "home#index"
-  get "/assets", to: "assets#index"
 end
