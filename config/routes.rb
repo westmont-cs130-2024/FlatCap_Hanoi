@@ -9,10 +9,17 @@ Rails.application.routes.draw do
         end
       end
 
+      # Routes for debts
+      resources :debts, only: [:index, :create, :show, :update, :destroy]
+    end
+  end
+
       # User registration and sign-in routes
       resources :users, only: [:create]
       post 'users/sign_in', to: 'users#sign_in'
     end
   end
 
+  root "home#index"
+  get "/assets", to: "assets#index"
 end
