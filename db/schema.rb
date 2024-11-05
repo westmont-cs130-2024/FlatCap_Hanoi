@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_03_230915) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_04_235227) do
   create_table "assets", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -22,6 +22,16 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_03_230915) do
     t.string "location"
     t.integer "user_id"
     t.index ["user_id"], name: "index_assets_on_user_id"
+  end
+
+  create_table "debts", force: :cascade do |t|
+    t.string "name"
+    t.float "amount_outstanding"
+    t.float "amount_paid"
+    t.string "category"
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

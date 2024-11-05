@@ -8,6 +8,9 @@ Rails.application.routes.draw do
           patch :update_status  # API route for updating the asset's status
         end
       end
+
+      # Routes for debts
+      resources :debts, only: [:index, :create, :show, :update, :destroy]
     end
   end
 

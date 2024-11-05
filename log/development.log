@@ -5343,3 +5343,98 @@ Processing by Api::V1::AssetsController#index as HTML
 Completed 200 OK in 2ms (Views: 1.7ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.2ms)
 
 
+Started GET "/" for 127.0.0.1 at 2024-11-04 15:00:47 -0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by HomeController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 56.8ms | GC: 25.3ms)
+Completed 200 OK in 76ms (Views: 59.6ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 26.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2024-11-04 15:00:57 -0800
+Processing by HomeController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (Duration: 0.2ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 2.5ms | GC: 0.3ms)
+Completed 200 OK in 4ms (Views: 3.0ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.3ms)
+
+
+Started GET "/" for 127.0.0.1 at 2024-11-04 15:00:59 -0800
+Processing by HomeController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 4.2ms | GC: 0.0ms)
+Completed 200 OK in 7ms (Views: 4.9ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2024-11-04 15:34:19 -0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by HomeController#index as HTML
+  Rendering layout layouts/application.html.erb
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (Duration: 0.4ms | GC: 0.0ms)
+  Rendered layout layouts/application.html.erb (Duration: 32.0ms | GC: 14.1ms)
+Completed 200 OK in 45ms (Views: 36.7ms | ActiveRecord: 0.0ms (0 queries, 0 cached) | GC: 16.4ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-04 15:35:00 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.2ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 9ms (Views: 7.8ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-04 15:35:00 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 1ms (Views: 1.0ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-04 15:35:04 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 3ms (Views: 2.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-04 15:35:04 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+  [1m[36mActiveRecord::InternalMetadata Load (0.3ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateDebts (20241104234601)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.6ms)[0m  [1m[35mCREATE TABLE "debts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "amount_outstanding" float, "amount_paid" float, "category" varchar, "status" boolean DEFAULT 0, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20241104234601') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to ChangeStatusTypeInDebts (20241104235227)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TEMPORARY TABLE "adebts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "amount_outstanding" float, "amount_paid" float, "category" varchar, "status" boolean DEFAULT 0, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "adebts" ("id","name","amount_outstanding","amount_paid","category","status","created_at","updated_at")
+                     SELECT "id","name","amount_outstanding","amount_paid","category","status","created_at","updated_at" FROM "debts"[0m
+  [1m[35m (0.1ms)[0m  [1m[35mDROP TABLE "debts"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "debts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "amount_outstanding" float, "amount_paid" float, "category" varchar, "status" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "debts" ("id","name","amount_outstanding","amount_paid","category","status","created_at","updated_at")
+                     SELECT "id","name","amount_outstanding","amount_paid","category","status","created_at","updated_at" FROM "adebts"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "adebts"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20241104235227') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
