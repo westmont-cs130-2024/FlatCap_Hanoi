@@ -5840,3 +5840,306 @@ Processing by Api::V1::AssetsController#index as HTML
 Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
 
 
+  [1m[36mActiveRecord::SchemaMigration Load (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT * FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? ORDER BY "ar_internal_metadata"."key" ASC LIMIT 1[0m  [[nil, "environment"]]
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateDebts (20241104234601)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "debts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "amount_outstanding" float, "amount_paid" float, "category" varchar, "status" boolean DEFAULT 0, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20241104234601') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+Migrating to ChangeStatusTypeInDebts (20241104235227)
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = ON[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = OFF[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE TEMPORARY TABLE "adebts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "amount_outstanding" float, "amount_paid" float, "category" varchar, "status" boolean DEFAULT 0, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "adebts" ("id","name","amount_outstanding","amount_paid","category","status","created_at","updated_at")
+                     SELECT "id","name","amount_outstanding","amount_paid","category","status","created_at","updated_at" FROM "debts"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "debts"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mCREATE TABLE "debts" ("id" integer PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "amount_outstanding" float, "amount_paid" float, "category" varchar, "status" varchar, "created_at" datetime(6) NOT NULL, "updated_at" datetime(6) NOT NULL)[0m
+  [1m[35m (0.0ms)[0m  [1m[32mINSERT INTO "debts" ("id","name","amount_outstanding","amount_paid","category","status","created_at","updated_at")
+                     SELECT "id","name","amount_outstanding","amount_paid","category","status","created_at","updated_at" FROM "adebts"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mDROP TABLE "adebts"[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA defer_foreign_keys = 0[0m
+  [1m[35m (0.0ms)[0m  [1m[35mPRAGMA foreign_keys = 1[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.0ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ('20241104235227') RETURNING "version"[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::SchemaMigration Load (0.0ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/api/v1/users" for ::1 at 2024-11-04 18:01:09 -0800
+  [1m[36mActiveRecord::SchemaMigration Load (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Api::V1::UsersController#create as HTML
+  Parameters: {"user"=>{"firstName"=>"Elia", "lastName"=>"Tiaoa", "email"=>"[FILTERED]", "phoneNumber"=>"1234567890", "password"=>"[FILTERED]"}}
+[31mUnpermitted parameters: :firstName, :lastName, :phoneNumber. Context: { controller: Api::V1::UsersController, action: create, request: #<ActionDispatch::Request:0x0000000109148b60>, params: {"user"=>{"firstName"=>"Elia", "lastName"=>"Tiaoa", "email"=>"[FILTERED]", "phoneNumber"=>"1234567890", "password"=>"[FILTERED]"}, "controller"=>"api/v1/users", "action"=>"create"} }[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/users_controller.rb:6:in `create'
+  [1m[36mUser Exists? (0.8ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/users_controller.rb:6:in `create'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  ↳ app/controllers/api/v1/users_controller.rb:6:in `create'
+Completed 422 Unprocessable Content in 20ms (Views: 0.1ms | ActiveRecord: 1.7ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/users/sign_in" for ::1 at 2024-11-04 18:01:16 -0800
+Processing by Api::V1::UsersController#sign_in as HTML
+  Parameters: {"email"=>"[FILTERED]", "password"=>"[FILTERED]", "user"=>{"email"=>"[FILTERED]", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/users_controller.rb:17:in `sign_in'
+Completed 200 OK in 8ms (Views: 0.9ms | ActiveRecord: 0.6ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/users" for ::1 at 2024-11-04 18:01:50 -0800
+Processing by Api::V1::UsersController#create as HTML
+  Parameters: {"user"=>{"firstName"=>"Jonathan", "lastName"=>"Tiao", "email"=>"[FILTERED]", "phoneNumber"=>"3412040770", "password"=>"[FILTERED]"}}
+[31mUnpermitted parameters: :firstName, :lastName, :phoneNumber. Context: { controller: Api::V1::UsersController, action: create, request: #<ActionDispatch::Request:0x000000010a3fcd10>, params: {"user"=>{"firstName"=>"Jonathan", "lastName"=>"Tiao", "email"=>"[FILTERED]", "phoneNumber"=>"3412040770", "password"=>"[FILTERED]"}, "controller"=>"api/v1/users", "action"=>"create"} }[0m
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/users_controller.rb:6:in `create'
+  [1m[36mUser Exists? (0.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/users_controller.rb:6:in `create'
+  [1m[36mTRANSACTION (0.0ms)[0m  [1m[31mrollback transaction[0m
+  ↳ app/controllers/api/v1/users_controller.rb:6:in `create'
+Completed 422 Unprocessable Content in 4ms (Views: 0.1ms | ActiveRecord: 0.8ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/users/sign_in" for ::1 at 2024-11-04 18:08:35 -0800
+Processing by Api::V1::UsersController#sign_in as HTML
+  Parameters: {"email"=>"[FILTERED]", "password"=>"[FILTERED]", "user"=>{"email"=>"[FILTERED]", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (3.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/users_controller.rb:17:in `sign_in'
+Completed 401 Unauthorized in 8ms (Views: 0.2ms | ActiveRecord: 2.8ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/users/sign_in" for ::1 at 2024-11-04 18:08:48 -0800
+Processing by Api::V1::UsersController#sign_in as HTML
+  Parameters: {"email"=>"[FILTERED]", "password"=>"[FILTERED]", "user"=>{"email"=>"[FILTERED]", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/users_controller.rb:17:in `sign_in'
+Completed 200 OK in 6ms (Views: 1.6ms | ActiveRecord: 0.3ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-04 18:08:59 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.2ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 14ms (Views: 6.8ms | ActiveRecord: 0.4ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-04 18:08:59 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 1ms (Views: 1.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started DELETE "/api/v1/assets/4" for ::1 at 2024-11-04 18:09:02 -0800
+Processing by Api::V1::AssetsController#destroy as HTML
+  Parameters: {"id"=>"4"}
+  [1m[36mAsset Load (0.2ms)[0m  [1m[34mSELECT "assets".* FROM "assets" WHERE "assets"."id" = ? LIMIT ?[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:24:in `destroy'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+  [1m[36mAsset Destroy (1.0ms)[0m  [1m[31mDELETE FROM "assets" WHERE "assets"."id" = ?[0m  [["id", 4]]
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+Completed 200 OK in 9ms (Views: 0.2ms | ActiveRecord: 2.4ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started DELETE "/api/v1/assets/11" for ::1 at 2024-11-04 18:09:02 -0800
+Processing by Api::V1::AssetsController#destroy as HTML
+  Parameters: {"id"=>"11"}
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets" WHERE "assets"."id" = ? LIMIT ?[0m  [["id", 11], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:24:in `destroy'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+  [1m[36mAsset Destroy (1.8ms)[0m  [1m[31mDELETE FROM "assets" WHERE "assets"."id" = ?[0m  [["id", 11]]
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+Completed 200 OK in 8ms (Views: 0.2ms | ActiveRecord: 2.1ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started DELETE "/api/v1/assets/12" for ::1 at 2024-11-04 18:09:03 -0800
+Processing by Api::V1::AssetsController#destroy as HTML
+  Parameters: {"id"=>"12"}
+  [1m[36mAsset Load (0.8ms)[0m  [1m[34mSELECT "assets".* FROM "assets" WHERE "assets"."id" = ? LIMIT ?[0m  [["id", 12], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:24:in `destroy'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+  [1m[36mAsset Destroy (1.9ms)[0m  [1m[31mDELETE FROM "assets" WHERE "assets"."id" = ?[0m  [["id", 12]]
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:26:in `destroy'
+Completed 200 OK in 36ms (Views: 0.3ms | ActiveRecord: 3.0ms (2 queries, 0 cached) | GC: 24.2ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-04 18:09:05 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 6ms (Views: 2.6ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 1.8ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-04 18:09:05 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 1ms (Views: 0.7ms | ActiveRecord: 0.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/assets" for ::1 at 2024-11-04 18:09:38 -0800
+Processing by Api::V1::AssetsController#create as HTML
+  Parameters: {"name"=>"House", "category"=>"Real Estate", "acquisition_date"=>"2008-07-25", "location"=>"Santa Barbara, CA", "description"=>"This is going to Connor!", "asset"=>{"name"=>"House", "description"=>"This is going to Connor!", "category"=>"Real Estate", "acquisition_date"=>"2008-07-25", "location"=>"Santa Barbara, CA"}}
+  [1m[36mUser Load (0.1ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT ?[0m  [["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:12:in `create'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:14:in `create'
+  [1m[36mAsset Create (0.9ms)[0m  [1m[32mINSERT INTO "assets" ("name", "description", "category", "created_at", "updated_at", "status", "acquisition_date", "location", "user_id") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "House"], ["description", "This is going to Connor!"], ["category", "Real Estate"], ["created_at", "2024-11-05 02:09:38.792159"], ["updated_at", "2024-11-05 02:09:38.792159"], ["status", 0], ["acquisition_date", "2008-07-25"], ["location", "Santa Barbara, CA"], ["user_id", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:14:in `create'
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:14:in `create'
+Completed 201 Created in 21ms (Views: 0.2ms | ActiveRecord: 1.3ms (2 queries, 0 cached) | GC: 1.6ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-04 18:09:38 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.1ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-04 18:09:41 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 3ms (Views: 1.7ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.6ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-04 18:09:41 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 1ms (Views: 0.9ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-04 18:09:42 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-04 18:09:42 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.2ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started PUT "/api/v1/assets/13" for ::1 at 2024-11-04 18:09:53 -0800
+Processing by Api::V1::AssetsController#update as HTML
+  Parameters: {"name"=>"House", "category"=>"Real Estate", "acquisition_date"=>"2008-07-25", "location"=>"Santa Barbara, CA", "description"=>"This is going to Ella!", "id"=>"13", "asset"=>{"name"=>"House", "description"=>"This is going to Ella!", "category"=>"Real Estate", "acquisition_date"=>"2008-07-25", "location"=>"Santa Barbara, CA"}}
+  [1m[36mAsset Load (0.3ms)[0m  [1m[34mSELECT "assets".* FROM "assets" WHERE "assets"."id" = ? LIMIT ?[0m  [["id", 13], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/assets_controller.rb:34:in `update'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:35:in `update'
+  [1m[36mAsset Update (1.5ms)[0m  [1m[33mUPDATE "assets" SET "description" = ?, "updated_at" = ? WHERE "assets"."id" = ?[0m  [["description", "This is going to Ella!"], ["updated_at", "2024-11-05 02:09:53.970804"], ["id", 13]]
+  ↳ app/controllers/api/v1/assets_controller.rb:35:in `update'
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:35:in `update'
+Completed 200 OK in 13ms (Views: 0.4ms | ActiveRecord: 2.0ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/assets" for ::1 at 2024-11-04 18:09:53 -0800
+Processing by Api::V1::AssetsController#index as HTML
+  [1m[36mAsset Load (0.1ms)[0m  [1m[34mSELECT "assets".* FROM "assets"[0m
+  ↳ app/controllers/api/v1/assets_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.4ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started GET "/api/v1/debts" for ::1 at 2024-11-04 18:10:03 -0800
+Processing by Api::V1::DebtsController#index as HTML
+  [1m[36mDebt Load (0.1ms)[0m  [1m[34mSELECT "debts".* FROM "debts"[0m
+  ↳ app/controllers/api/v1/debts_controller.rb:6:in `index'
+Completed 200 OK in 3ms (Views: 1.4ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.1ms)
+
+
+Started GET "/api/v1/debts" for ::1 at 2024-11-04 18:10:03 -0800
+Processing by Api::V1::DebtsController#index as HTML
+  [1m[36mDebt Load (0.0ms)[0m  [1m[34mSELECT "debts".* FROM "debts"[0m
+  ↳ app/controllers/api/v1/debts_controller.rb:6:in `index'
+Completed 200 OK in 1ms (Views: 0.7ms | ActiveRecord: 0.0ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/debts" for ::1 at 2024-11-04 18:10:42 -0800
+Processing by Api::V1::DebtsController#create as HTML
+  Parameters: {"name"=>"Chumash Casino", "amount_outstanding"=>"10000", "amount_paid"=>"50", "category"=>"Credit Card", "status"=>"Unpaid", "debt"=>{"name"=>"Chumash Casino", "amount_outstanding"=>"10000", "amount_paid"=>"50", "category"=>"Credit Card", "status"=>"Unpaid"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/debts_controller.rb:13:in `create'
+  [1m[36mDebt Create (1.2ms)[0m  [1m[32mINSERT INTO "debts" ("name", "amount_outstanding", "amount_paid", "category", "status", "created_at", "updated_at") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["name", "Chumash Casino"], ["amount_outstanding", 10000.0], ["amount_paid", 50.0], ["category", "Credit Card"], ["status", "Unpaid"], ["created_at", "2024-11-05 02:10:42.606767"], ["updated_at", "2024-11-05 02:10:42.606767"]]
+  ↳ app/controllers/api/v1/debts_controller.rb:13:in `create'
+  [1m[36mTRANSACTION (1.5ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/debts_controller.rb:13:in `create'
+Completed 201 Created in 13ms (Views: 0.4ms | ActiveRecord: 3.9ms (1 query, 0 cached) | GC: 0.8ms)
+
+
+Started GET "/api/v1/debts" for ::1 at 2024-11-04 18:10:42 -0800
+Processing by Api::V1::DebtsController#index as HTML
+  [1m[36mDebt Load (0.1ms)[0m  [1m[34mSELECT "debts".* FROM "debts"[0m
+  ↳ app/controllers/api/v1/debts_controller.rb:6:in `index'
+Completed 200 OK in 2ms (Views: 1.7ms | ActiveRecord: 0.1ms (1 query, 0 cached) | GC: 0.3ms)
+
+
+Started POST "/api/v1/users" for ::1 at 2024-11-04 18:49:22 -0800
+Processing by Api::V1::UsersController#create as HTML
+  Parameters: {"user"=>{"first_name"=>"Connor", "last_name"=>"Rogs", "email"=>"[FILTERED]", "phone_number"=>"1234567890", "password"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/users_controller.rb:6:in `create'
+  [1m[36mUser Exists? (5.7ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/users_controller.rb:6:in `create'
+  [1m[36mUser Create (0.4ms)[0m  [1m[32mINSERT INTO "users" ("email", "created_at", "updated_at", "first_name", "last_name", "phone_number", "password") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "[FILTERED]"], ["created_at", "2024-11-05 02:49:22.167714"], ["updated_at", "2024-11-05 02:49:22.167714"], ["first_name", "Connor"], ["last_name", "Rogs"], ["phone_number", "1234567890"], ["password", "[FILTERED]"]]
+  ↳ app/controllers/api/v1/users_controller.rb:6:in `create'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/users_controller.rb:6:in `create'
+Completed 201 Created in 19ms (Views: 1.0ms | ActiveRecord: 6.7ms (2 queries, 0 cached) | GC: 1.4ms)
+
+
+Started POST "/api/v1/users" for ::1 at 2024-11-04 18:49:43 -0800
+Processing by Api::V1::UsersController#create as HTML
+  Parameters: {"user"=>{"first_name"=>"test", "last_name"=>"test", "email"=>"[FILTERED]", "phone_number"=>"1234567890", "password"=>"[FILTERED]"}}
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[36mbegin transaction[0m
+  ↳ app/controllers/api/v1/users_controller.rb:6:in `create'
+  [1m[36mUser Exists? (2.0ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/users_controller.rb:6:in `create'
+  [1m[36mUser Create (0.2ms)[0m  [1m[32mINSERT INTO "users" ("email", "created_at", "updated_at", "first_name", "last_name", "phone_number", "password") VALUES (?, ?, ?, ?, ?, ?, ?) RETURNING "id"[0m  [["email", "[FILTERED]"], ["created_at", "2024-11-05 02:49:43.749542"], ["updated_at", "2024-11-05 02:49:43.749542"], ["first_name", "test"], ["last_name", "test"], ["phone_number", "1234567890"], ["password", "[FILTERED]"]]
+  ↳ app/controllers/api/v1/users_controller.rb:6:in `create'
+  [1m[36mTRANSACTION (0.5ms)[0m  [1m[36mcommit transaction[0m
+  ↳ app/controllers/api/v1/users_controller.rb:6:in `create'
+Completed 201 Created in 10ms (Views: 0.3ms | ActiveRecord: 2.8ms (2 queries, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/users/sign_in" for ::1 at 2024-11-04 18:49:51 -0800
+Processing by Api::V1::UsersController#sign_in as HTML
+  Parameters: {"email"=>"[FILTERED]", "password"=>"[FILTERED]", "user"=>{"email"=>"[FILTERED]", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/users_controller.rb:17:in `sign_in'
+Completed 200 OK in 6ms (Views: 0.5ms | ActiveRecord: 0.8ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/users/sign_in" for ::1 at 2024-11-04 18:49:58 -0800
+Processing by Api::V1::UsersController#sign_in as HTML
+  Parameters: {"email"=>"[FILTERED]", "password"=>"[FILTERED]", "user"=>{"email"=>"[FILTERED]", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/users_controller.rb:17:in `sign_in'
+Completed 401 Unauthorized in 5ms (Views: 0.4ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+
+Started POST "/api/v1/users/sign_in" for ::1 at 2024-11-04 18:50:01 -0800
+Processing by Api::V1::UsersController#sign_in as HTML
+  Parameters: {"email"=>"[FILTERED]", "password"=>"[FILTERED]", "user"=>{"email"=>"[FILTERED]", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."email" = ? LIMIT ?[0m  [["email", "[FILTERED]"], ["LIMIT", 1]]
+  ↳ app/controllers/api/v1/users_controller.rb:17:in `sign_in'
+Completed 200 OK in 8ms (Views: 0.7ms | ActiveRecord: 0.2ms (1 query, 0 cached) | GC: 0.0ms)
+
+

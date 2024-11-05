@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   # API routes for the React frontend
   namespace :api do
     namespace :v1 do
@@ -11,8 +10,6 @@ Rails.application.routes.draw do
 
       # Routes for debts
       resources :debts, only: [:index, :create, :show, :update, :destroy]
-    end
-  end
 
       # User registration and sign-in routes
       resources :users, only: [:create]
@@ -20,6 +17,7 @@ Rails.application.routes.draw do
     end
   end
 
+  # Web route for root
   root "home#index"
   get "/assets", to: "assets#index"
 end
