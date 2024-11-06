@@ -1,0 +1,38 @@
+/* src/styles/header.css */
+.header-container {
+    /* Add styling here */
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    padding: 1rem;
+    background-color: #f8f9fa;
+  }
+  
+  .logo .hanoi {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .user-info .username {
+    font-size: 18px;
+    color: #333;
+  }
+  
+  .secondary-header {
+    background-color: #e9ecef;
+    padding: 0.5rem 1rem;
+  }
+  
+  .secondary-nav-list {
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+  }
+  
+  .secondary-nav-item {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
