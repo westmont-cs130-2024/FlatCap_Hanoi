@@ -13,8 +13,12 @@ function AssetList() {
   // Fetch assets from the API
   useEffect(() => {
     const fetchAssets = async () => {
-      const response = await getAssets();
-      setAssets(response.data);
+      try {
+        const response = await getAssets();
+        setAssets(response.data);
+      } catch(ex) {
+        console.log("Error occurred: ", ex.status, ex.response);
+      }
     };
     fetchAssets();
   }, []);

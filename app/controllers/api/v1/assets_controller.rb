@@ -1,8 +1,11 @@
 # app/controllers/api/v1/assets_controller.rb
 class Api::V1::AssetsController < ApplicationController
+  before_action :authenticate
+
   # Fetch all assets
   def index
-    @assets = Asset.all
+    user = User.find(request.session['user_id'])
+    @assets = Asset.where(user: user).all
     render json: @assets
   end
 
@@ -37,7 +40,7 @@ class Api::V1::AssetsController < ApplicationController
     else
       render json: { errors: @asset.errors.full_messages }, status: :unprocessable_entity
     end
-    end
+  end
 
   private
 
