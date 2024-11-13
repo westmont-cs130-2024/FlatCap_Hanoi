@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_04_235227) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_13_050759) do
   create_table "assets", force: :cascade do |t|
     t.string "name"
     t.string "description"
@@ -34,6 +34,14 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_04_235227) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "documents", force: :cascade do |t|
+    t.string "name"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_documents_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", null: false
     t.datetime "created_at", null: false
@@ -46,4 +54,5 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_04_235227) do
   end
 
   add_foreign_key "assets", "users"
+  add_foreign_key "documents", "users"
 end

@@ -11,6 +11,9 @@ Rails.application.routes.draw do
       # Routes for debts
       resources :debts, only: [:index, :create, :show, :update, :destroy]
 
+      # Routes for documents
+      resources :documents, only: [:index, :create, :destroy]
+
       # User registration and sign-in routes
       resources :users, only: [:create]
       post 'users/sign_in', to: 'users#sign_in'

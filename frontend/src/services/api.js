@@ -26,4 +26,9 @@ export const createDebt = (data) => api.post('/debts', data);
 export const updateDebt = (id, data) => api.put(`/debts/${id}`, data);
 export const deleteDebt = (id) => api.delete(`/debts/${id}`);
 
+export const getDocuments = () => api.get('/documents');
+export const uploadDocument = (formData) => api.post('/documents', formData, {
+  headers: { 'Content-Type': 'multipart/form-data' },
+});
+
 export default api;

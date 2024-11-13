@@ -1,6 +1,6 @@
 # app/models/asset.rb
 class Asset < ApplicationRecord
-  belongs_to :user, optional: true
+  belongs_to :user
 
   # Define enum for `status`
   enum :status, { inventory: 0, value: 1, marshal: 2, administer: 3 }
