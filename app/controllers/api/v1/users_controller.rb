@@ -17,12 +17,14 @@ class Api::V1::UsersController < ApplicationController
     @user = User.find_by(email: params[:email])
 
     if @user && @user.password == params[:password]
+      # NOTE: there is no logout method right now,
+      # that should clear this session variable
+      request.session['user_id'] = @user.id
       render json: { message: 'Sign-in successful', user: @user }, status: :ok
     else
       render json: { error: 'Invalid email or password' }, status: :unauthorized
     end
   end
-
 
   private
 
