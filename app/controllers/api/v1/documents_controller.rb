@@ -5,7 +5,9 @@ class Api::V1::DocumentsController < ApplicationController
   # List all documents for the current user
   def index
     user = User.find(request.session['user_id'])
-    @documents = Document.where(user: user).all
+    @documents = Document.where(user: user).map do |document|
+      document.as_json.merge({ url: url_for(document.file) }) # Ensure each document has a 'url' field with Active Storage link
+    end
     render json: @documents
   end
 
@@ -13,6 +15,7 @@ class Api::V1::DocumentsController < ApplicationController
   def create
     user = User.find(request.session['user_id'])
     @document = user.documents.build(document_params)
+    @document.name = params[:document][:file].original_filename
 
     if @document.save
       render json: @document, status: :created
@@ -35,6 +38,7 @@ class Api::V1::DocumentsController < ApplicationController
   private
 
   def document_params
-    params.require(:document).permit(:name)
+    # params.require(:document).permit(:name)
+    params.require(:document).permit(:name, :file)
   end
 end

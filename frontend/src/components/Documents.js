@@ -1,6 +1,6 @@
 // src/components/Documents.js
 import React, { useState, useEffect } from 'react';
-import { getDocuments, uploadDocument } from '../services/api'; // Only the methods you have
+import { getDocuments, uploadDocument, deleteDocument } from '../services/api'; // Only the methods you have
 import Header from './Header';
 
 function Documents() {
@@ -29,15 +29,25 @@ function Documents() {
     async function handleFileUpload() {
         if (file) {
             const formData = new FormData();
-            formData.append("file", file); // Append the selected file to FormData
+            formData.append("document[file]", file); // Ensure correct format
+            formData.append("document[name]", file.name); // Add a name if needed
 
             try {
                 await uploadDocument(formData); // Call the API to upload the document
-                const updatedDocuments = await getDocuments(); // Get the updated list of documents
+                const updatedDocuments = await getDocuments(); // Fetch the updated list of documents
                 setDocuments(updatedDocuments.data); // Update state with the new documents list
             } catch (error) {
                 console.error("Error uploading document:", error);
             }
+        }
+    }
+
+    async function handleDelete(id) {
+        try {
+            await deleteDocument(id); // Call the API to delete the document
+            setDocuments((prevDocuments) => prevDocuments.filter((doc) => doc.id !== id)); // Remove the deleted document from the list
+        } catch (error) {
+            console.error("Error deleting document:", error);
         }
     }
 
@@ -56,9 +66,10 @@ function Documents() {
                 {documents.map((doc) => (
                     <li key={doc.id}>
                         <div className="document-item">
-                            <a href={`/api/v1/documents/${doc.id}`} target="_blank" rel="noopener noreferrer">
+                            <a href={doc.url} target="_blank" rel="noopener noreferrer">
                                 {doc.name}
                             </a>
+                            <button onClick={() => handleDelete(doc.id)}>Delete</button>
                         </div>
                     </li>
                 ))}
