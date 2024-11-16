@@ -1,6 +1,8 @@
 # app/models/user.rb
 class User < ApplicationRecord
   has_many :assets, dependent: :destroy
+  has_many :documents, dependent: :destroy
+  has_many :debts, dependent: :destroy
 
   # Validations
   validates :first_name, presence: true

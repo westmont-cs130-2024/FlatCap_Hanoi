@@ -28,8 +28,8 @@ function Header() {
           <ul className="secondary-nav-list">
             <li><Link to="/home" className="secondary-nav-item">Home</Link></li>
             <li><Link to="/assets" className="secondary-nav-item">Assets</Link></li>
-            <li><a href="/debts" className="secondary-nav-item">Debts</a></li>
-            <li><a href="#" className="secondary-nav-item">Documents</a></li>
+            <li><Link to="/debts" className="secondary-nav-item">Debts</Link></li>
+            <li><Link to="/documents" className="secondary-nav-item">Documents</Link></li>
           </ul>
         </nav>
       </div>

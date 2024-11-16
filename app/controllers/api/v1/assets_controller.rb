@@ -11,8 +11,8 @@ class Api::V1::AssetsController < ApplicationController
 
   # Create a new asset
   def create
-    @asset = Asset.new(asset_params)
-    @asset.user = User.first # Temporarily associate with the first user (replace this with actual logic as needed)
+    user = User.find(request.session['user_id'])
+    @asset = user.assets.build(asset_params)
 
     if @asset.save
       render json: @asset, status: :created
