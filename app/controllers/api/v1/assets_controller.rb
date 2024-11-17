@@ -45,6 +45,6 @@ class Api::V1::AssetsController < ApplicationController
   private
 
   def asset_params
-    params.require(:asset).permit(:name, :category, :acquisition_date, :location, :description)
+    params.require(:asset).permit(:name, :category, :acquisition_date, :location, :description, :inventoried, :valued, :marshalled, :administered, :value)
   end
 end
