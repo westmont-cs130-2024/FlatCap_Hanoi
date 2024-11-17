@@ -1,9 +1,14 @@
-import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import React, {useState} from 'react';
+import { Modal, Button, Form } from 'react-bootstrap';
 
 function MarshallModal({ asset, show, onClose, onSave }) {
+    const [didSell, setDidSell] = useState(false); // State for the checkbox
     const handleSave = () => {
-        onSave({ marshalled: true });
+        const updatedFields = { marshalled: true };
+        if (didSell) {
+            updatedFields.category = "Financial Accounts"; // Update category if sold
+        }
+        onSave(updatedFields); // Send updated fields to the parent component
         onClose();
     };
 
@@ -13,7 +18,18 @@ function MarshallModal({ asset, show, onClose, onSave }) {
                 <Modal.Title>Marshall Asset</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>Are you sure you want to mark the asset "{asset.name}" as marshalled?</p>
+                {/* Show the "Did you sell this asset?" question only for non-financial accounts */}
+                {asset.category !== "Financial Accounts" && (
+                    <Form.Group controlId="didSellCheckbox">
+                        <Form.Check
+                            type="checkbox"
+                            label="Did you sell this asset?"
+                            checked={didSell}
+                            onChange={(e) => setDidSell(e.target.checked)}
+                        />
+                    </Form.Group>
+                )}
+                <p>Did you Marshal "{asset.name}"?</p>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={onClose}>

@@ -73,18 +73,24 @@ function AssetList() {
               <small className="text-muted">{asset.category}</small>
             </div>
             <div className="card-body d-flex justify-content-between align-items-center">
-              <div>
-                <h5
-                  className="card-title mb-0"
-                  style={{ textDecoration: 'underline', cursor: 'pointer' }}
-                  onClick={() => openModal(asset, 'Inventory')}
-                >
-                  {asset.name}
-                </h5>
-                <p className="card-text mb-0">{asset.description}</p>
-              </div>
-              <div className="d-flex flex-wrap">
-                <button
+                <div>
+                    <h5
+                        className="card-title mb-0"
+                        style={{textDecoration: 'underline', cursor: 'pointer'}}
+                        onClick={() => openModal(asset, 'Inventory')}
+                    >
+                        {asset.name}
+                    </h5>
+                    <p className="card-text mb-0">{asset.description}</p>
+                    {/* Conditionally display the value if "valued" is true */}
+                    {asset.valued && (
+                        <p className="card-text font-weight-bold text-success">
+                            Value: ${asset.value?.toLocaleString() || 'N/A'}
+                        </p>
+                    )}
+                </div>
+                <div className="d-flex flex-wrap">
+                    <button
                   className={`btn ${asset.inventoried ? 'btn-primary' : 'btn-secondary'} mr-2 mb-2`}
                   onClick={() => openModal(asset, 'Inventory')}
                 >
