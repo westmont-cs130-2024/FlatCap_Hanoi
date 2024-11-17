@@ -1,11 +1,11 @@
 // src/components/Header.js
-import React, { useContext } from 'react';
+import React, { useContext} from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../context/UserContext'; // Import your UserContext
 import '../styles/header.css'; // Optional: Add specific styles for the header component
 
 function Header() {
-  const { user } = useContext(UserContext); // Access user data from context
+  const { user} = useContext(UserContext); // Access user data from context
 
   return (
     <div className="header-container">
@@ -17,7 +17,7 @@ function Header() {
         <div className="user-info">
           {/* Display logged-in user's name */}
           <div className="username">
-            {user ? `${user.firstName} ${user.lastName}` : 'Guest'}
+            {user ? `${user.first_name} ${user.last_name}` : 'Guest'}
           </div>
         </div>
       </header>

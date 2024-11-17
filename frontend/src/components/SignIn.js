@@ -30,8 +30,8 @@ const SignIn = () => {
       
       if (response.status === 200) {
         setUser({
-          firstName: response.data.user.firstName,
-          lastName: response.data.user.lastName,
+          first_name: response.data.user.first_name,
+          last_name: response.data.user.last_name,
         }); // Update the user context with the signed-in user's name
         setSuccess(true);
         setTimeout(() => navigate('/home'), 1000); // Redirect to home after a delay
