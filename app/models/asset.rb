@@ -12,6 +12,8 @@ class Asset < ApplicationRecord
   validates :category, presence: true, inclusion: { in: CATEGORIES }
   validates :location, presence: true
   validate :acquisition_date_is_valid_date
+  validates :value, numericality: { greater_than_or_equal_to: 0, allow_nil: true }
+
 
   # Callback to set default status
   after_initialize :set_default_status, if: :new_record?
@@ -38,5 +40,9 @@ class Asset < ApplicationRecord
   # Set initial status to `inventory` by default
   def set_default_status
     self.status ||= :inventory
+    self.inventoried ||= false
+    self.valued ||= false
+    self.marshalled ||= false
+    self.administered ||= false
   end
 end

@@ -30,6 +30,7 @@ const SignIn = () => {
       
       if (response.status === 200) {
         setUser({
+          // THIS IS PROBABLY WHERE YOU WOULD ADD TO SO THAT OTHER ACCOUNT DATA FIELDS CAN SHOW UP
           first_name: response.data.user.first_name,
           last_name: response.data.user.last_name,
         }); // Update the user context with the signed-in user's name

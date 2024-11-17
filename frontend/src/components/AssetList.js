@@ -3,11 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { getAssets, createAsset, deleteAsset, updateAsset } from '../services/api';
 import AssetModal from './AssetModal';
 import NewAssetModal from './NewAssetModal';
+import ValueModal from './ValueModal';
+import MarshallModal from './MarshallModal';
+import AdministerModal from './AdministerModal';
 import Header from './Header';
 
 function AssetList() {
   const [assets, setAssets] = useState([]);
   const [selectedAsset, setSelectedAsset] = useState(null);
+  const [modalType, setModalType] = useState(null); // Tracks which modal to show
   const [showNewAssetModal, setShowNewAssetModal] = useState(false);
 
   // Fetch assets from the API
@@ -24,13 +28,16 @@ function AssetList() {
   }, []);
 
   // Open edit modal for an asset
-  const openEditModal = (asset) => {
-    setSelectedAsset(asset);
-  };
+    // Open a specific modal for an asset
+    const openModal = (asset, type) => {
+        setSelectedAsset(asset);
+        setModalType(type);
+    };
 
-  const closeModal = () => {
-    setSelectedAsset(null);
-  };
+    const closeModal = () => {
+        setSelectedAsset(null);
+        setModalType(null);
+    };
 
   // Save changes to an asset
   const handleSave = async (updatedAsset) => {
@@ -70,7 +77,7 @@ function AssetList() {
                 <h5
                   className="card-title mb-0"
                   style={{ textDecoration: 'underline', cursor: 'pointer' }}
-                  onClick={() => openEditModal(asset)}
+                  onClick={() => openModal(asset, 'Inventory')}
                 >
                   {asset.name}
                 </h5>
@@ -78,26 +85,26 @@ function AssetList() {
               </div>
               <div className="d-flex flex-wrap">
                 <button
-                  className="btn btn-secondary mr-2 mb-2"
-                  onClick={() => openEditModal(asset)}
+                  className={`btn ${asset.inventoried ? 'btn-primary' : 'btn-secondary'} mr-2 mb-2`}
+                  onClick={() => openModal(asset, 'Inventory')}
                 >
                   Inventory
                 </button>
                 <button
-                  className="btn btn-secondary mr-2 mb-2"
-                  onClick={() => openEditModal(asset)}
+                  className={`btn ${asset.valued ? 'btn-primary' : 'btn-secondary'} mr-2 mb-2`}
+                  onClick={() => openModal(asset, 'Value')}
                 >
                   Value
                 </button>
                 <button
-                  className="btn btn-secondary mr-2 mb-2"
-                  onClick={() => openEditModal(asset)}
+                  className={`btn ${asset.marshalled ? 'btn-primary' : 'btn-secondary'} mr-2 mb-2`}
+                  onClick={() => openModal(asset, 'Marshall')}
                 >
                   Marshal
                 </button>
                 <button
-                  className="btn btn-secondary mr-2 mb-2"
-                  onClick={() => openEditModal(asset)}
+                  className={`btn ${asset.administered ? 'btn-primary' : 'btn-secondary'} mr-2 mb-2`}
+                  onClick={() => openModal(asset, 'Administer')}
                 >
                   Administer
                 </button>
@@ -112,9 +119,19 @@ function AssetList() {
           </div>
         ))}
       </div>
+      {/* New Asset Modal */}
+      <NewAssetModal
+          show={showNewAssetModal}
+          onClose={() => setShowNewAssetModal(false)}
+          onCreate={async (newAsset) => {
+              await createAsset(newAsset);
+              const response = await getAssets();
+              setAssets(response.data);
+          }}
+      />
 
       {/* Edit Asset Modal */}
-      {selectedAsset && (
+      {modalType === 'Inventory' && selectedAsset && (
         <AssetModal
           asset={selectedAsset}
           onClose={closeModal}
@@ -123,16 +140,36 @@ function AssetList() {
         />
       )}
 
-      {/* New Asset Modal */}
-      <NewAssetModal
-        show={showNewAssetModal}
-        onClose={() => setShowNewAssetModal(false)}
-        onCreate={async (newAsset) => {
-          await createAsset(newAsset);
-          const response = await getAssets();
-          setAssets(response.data);
-        }}
-      />
+      {/* Value Modal */}
+      {modalType === 'Value' && selectedAsset && (
+        <ValueModal
+          asset={selectedAsset}
+          show={modalType === 'Value'}
+          onClose={closeModal}
+          onSave={handleSave}
+        />
+      )}
+
+      {/* Marshall Modal */}
+      {modalType === 'Marshall' && selectedAsset && (
+        <MarshallModal
+          asset={selectedAsset}
+          show={modalType === 'Marshall'}
+          onClose={closeModal}
+          onSave={handleSave}
+        />
+      )}
+
+      {/* Administer Modal */}
+      {modalType === 'Administer' && selectedAsset && (
+        <AdministerModal
+          asset={selectedAsset}
+          show={modalType === 'Administer'}
+          onClose={closeModal}
+          onSave={handleSave}
+        />
+      )}
+
     </div>
   );
 }

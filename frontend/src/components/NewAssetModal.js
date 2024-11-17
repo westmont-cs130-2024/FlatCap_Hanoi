@@ -28,7 +28,14 @@ function NewAssetModal({ show, onClose, onCreate }) {
   };
 
   const handleSubmit = () => {
-    onCreate(newAsset);
+    onCreate({
+      ...newAsset,
+      inventoried: true,
+      valued: false,
+      marshalled: false,
+      administered: false,
+      value: 0,
+    });
     setNewAsset({
       name: '',
       category: '',
