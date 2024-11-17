@@ -17,7 +17,13 @@ function Header() {
         <div className="user-info">
           {/* Display logged-in user's name */}
           <div className="username">
-            {user ? `${user.first_name} ${user.last_name}` : 'Guest'}
+            {user ? (
+                <Link to="/account" className="user-link">
+                  {user.first_name} {user.last_name}
+                </Link>
+            ) : (
+                'Guest'
+            )}
           </div>
         </div>
       </header>
