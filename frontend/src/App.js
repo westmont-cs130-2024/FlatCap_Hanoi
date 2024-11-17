@@ -8,6 +8,7 @@ import SignIn from './components/SignIn';
 import CreateAccount from './components/CreateAccount';
 import DebtList from './components/DebtList';
 import Documents from './components/Documents';
+import AccountPage from "./components/AccountPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path="/documents" element={<Documents />} />
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/create-account" element={<CreateAccount />} />
+            <Route path="/account" element={<AccountPage />} />
 
           </Routes>
         </div>

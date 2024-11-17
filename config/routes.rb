@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   # API routes for the React frontend
   namespace :api do
     namespace :v1 do
+      get 'current_user', to: 'users#current_user'
       resources :assets, only: [:index, :create, :show, :update, :destroy] do
         member do
           patch :update_status  # API route for updating the asset's status

@@ -26,6 +26,17 @@ class Api::V1::UsersController < ApplicationController
     end
   end
 
+  # Action to get the current user (you need this for your UserContext)
+  def current_user
+    @user = User.find_by(id: session[:user_id]) # Assuming session stores user_id
+    if @user
+      render json: @user
+    else
+      render json: { error: 'User not found' }, status: :unauthorized
+    end
+  end
+
+
   private
 
   # Strong parameters for user creation
