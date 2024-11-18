@@ -67,6 +67,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_17_063708) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.index ["user_id"], name: "index_debts_on_user_id"
+    t.float "total_amount"
   end
 
   create_table "documents", force: :cascade do |t|
