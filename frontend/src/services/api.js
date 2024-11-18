@@ -32,4 +32,14 @@ export const uploadDocument = (formData) => api.post('/documents', formData, {
 });
 export const deleteDocument = (id) => api.delete(`/documents/${id}`);
 
+export const getBeneficiaries = () => api.get('/beneficiaries');
+export const createBeneficiary = (data) => api.post('/beneficiaries', data);
+// Update Beneficiary
+export const updateBeneficiary = (id, data) => api.put(`/beneficiaries/${id}`, { beneficiary: data });
+// Delete Beneficiary
+export const deleteBeneficiary = (id) => api.delete(`/beneficiaries/${id}`);
+
+export const addBeneficiariesToAsset = (assetId, beneficiaryIds) =>
+    api.post(`/assets/${assetId}/add_beneficiaries`, { beneficiary_ids: beneficiaryIds });
+
 export default api;

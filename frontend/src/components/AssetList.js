@@ -1,6 +1,7 @@
 // src/components/AssetList.js
 import React, { useState, useEffect } from 'react';
 import { getAssets, createAsset, deleteAsset, updateAsset } from '../services/api';
+import { getBeneficiaries, createBeneficiary, updateBeneficiary, deleteBeneficiary } from '../services/api';
 import AssetModal from './AssetModal';
 import NewAssetModal from './NewAssetModal';
 import ValueModal from './ValueModal';
@@ -84,8 +85,20 @@ function AssetList() {
                     <p className="card-text mb-0">{asset.description}</p>
                     {/* Conditionally display the value if "valued" is true */}
                     {asset.valued && (
-                        <p className="card-text font-weight-bold text-success">
+                        <p className="card-text font-weight-bold text-success mb-0">
                             Value: ${asset.value?.toLocaleString() || 'N/A'}
+                        </p>
+                    )}
+                    {/* Display administered beneficiaries */}
+                    {asset.administered && asset.beneficiaries && asset.beneficiaries.length > 0 && (
+                        <p className="card-text mb-0" style={{ color: 'blue' }}>
+                            Administered to: {' '}
+                            {asset.beneficiaries.map((beneficiary) => (
+                                <span key={beneficiary.id}>
+                                    {beneficiary.first_name} {beneficiary.last_name}
+                                    {asset.beneficiaries.indexOf(beneficiary) !== asset.beneficiaries.length - 1 && ', '}
+                                </span>
+                            ))}
                         </p>
                     )}
                 </div>
