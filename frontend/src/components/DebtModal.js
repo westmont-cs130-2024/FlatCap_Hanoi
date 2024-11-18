@@ -6,7 +6,7 @@ function DebtModal({ debt, onClose, onSave, onDelete }) {
   // State for the debt fields, initialized to the values of the current debt
   const [editedDebt, setEditedDebt] = useState({
     name: debt.name,
-    amount_outstanding: debt.amount_outstanding,
+    total_amount: debt.total_amount,
     amount_paid: debt.amount_paid,
     category: debt.category,
     status: debt.status,
@@ -18,6 +18,11 @@ function DebtModal({ debt, onClose, onSave, onDelete }) {
     "Credit Card",
     "Medical",
     "Other"
+  ];
+
+  const allowedStatus = [
+    "Paid",
+    "Unpaid"
   ];
 
   const handleChange = (e) => {
@@ -55,13 +60,13 @@ function DebtModal({ debt, onClose, onSave, onDelete }) {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Outstanding Amount</Form.Label>
+            <Form.Label>Total Amount</Form.Label>
             <Form.Control
               type="number"
               name="amount_outstanding"
-              value={editedDebt.amount_outstanding}
+              value={editedDebt.total_amount}
               onChange={handleChange}
-              placeholder="Enter outstanding amount"
+              placeholder="Enter total amount"
             />
           </Form.Group>
           <Form.Group>
@@ -93,14 +98,20 @@ function DebtModal({ debt, onClose, onSave, onDelete }) {
           <Form.Group>
             <Form.Label>Status</Form.Label>
             <Form.Control
-              type="text"
+              as="select"
               name="status"
               value={editedDebt.status}
               onChange={handleChange}
-              placeholder="Enter status"
-            />
-          </Form.Group>
-        </Form>
+            >
+              <option value="">Select a Status</option>
+              {allowedStatus.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+              </Form.Control>
+                </Form.Group>
+                </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>

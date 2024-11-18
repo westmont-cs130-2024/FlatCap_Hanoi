@@ -5,7 +5,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 function NewDebtModal({ show, onClose, onCreate }) {
   const [newDebt, setNewDebt] = useState({
     name: '',
-    amount_outstanding: '',
+    total_amount: '',
     amount_paid: '',
     category: '',
     status: '',
@@ -19,6 +19,12 @@ function NewDebtModal({ show, onClose, onCreate }) {
     "Other"
   ];
 
+  const allowedStatus = [
+    "Paid",
+    "Unpaid"
+  ];
+
+
   const handleChange = (e) => {
     setNewDebt({
       ...newDebt,
@@ -30,7 +36,7 @@ function NewDebtModal({ show, onClose, onCreate }) {
     onCreate(newDebt);
     setNewDebt({
       name: '',
-      amount_outstanding: '',
+      total_amount: '',
       amount_paid: '',
       category: '',
       status: '',
@@ -56,13 +62,13 @@ function NewDebtModal({ show, onClose, onCreate }) {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Outstanding Amount</Form.Label>
+            <Form.Label>Total Amount</Form.Label>
             <Form.Control
               type="number"
-              name="amount_outstanding"
-              value={newDebt.amount_outstanding}
+              name="total_amount"
+              value={newDebt.total_amount}
               onChange={handleChange}
-              placeholder="Enter outstanding amount"
+              placeholder="Enter total amount"
             />
           </Form.Group>
           <Form.Group>
@@ -94,12 +100,18 @@ function NewDebtModal({ show, onClose, onCreate }) {
           <Form.Group>
             <Form.Label>Status</Form.Label>
             <Form.Control
-              type="text"
+              as="select"
               name="status"
               value={newDebt.status}
               onChange={handleChange}
-              placeholder="Enter status"
-            />
+            >
+              <option value="">Select a Status</option>
+              {allowedStatus.map((status) => (
+                <option key={status} value={status}>
+                  {status}
+                </option>
+              ))}
+            </Form.Control>
           </Form.Group>
         </Form>
       </Modal.Body>
