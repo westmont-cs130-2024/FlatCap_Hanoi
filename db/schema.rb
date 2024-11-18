@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_17_063708) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_17_222748) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -57,6 +57,24 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_17_063708) do
     t.index ["user_id"], name: "index_assets_on_user_id"
   end
 
+  create_table "assets_beneficiaries", id: false, force: :cascade do |t|
+    t.integer "asset_id", null: false
+    t.integer "beneficiary_id", null: false
+    t.index ["asset_id"], name: "index_assets_beneficiaries_on_asset_id"
+    t.index ["beneficiary_id"], name: "index_assets_beneficiaries_on_beneficiary_id"
+  end
+
+  create_table "beneficiaries", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.text "notes"
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_beneficiaries_on_user_id"
+  end
+
   create_table "debts", force: :cascade do |t|
     t.string "name"
     t.float "amount_outstanding"
@@ -91,6 +109,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_17_063708) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "assets", "users"
+  add_foreign_key "beneficiaries", "users"
   add_foreign_key "debts", "users"
   add_foreign_key "documents", "users"
 end

@@ -36,6 +36,7 @@ function Header() {
             <li><Link to="/assets" className="secondary-nav-item">Assets</Link></li>
             <li><Link to="/debts" className="secondary-nav-item">Debts</Link></li>
             <li><Link to="/documents" className="secondary-nav-item">Documents</Link></li>
+            <li><Link to="/beneficiaries" className="secondary-nav-item">Beneficiaries</Link></li>
           </ul>
         </nav>
       </div>
