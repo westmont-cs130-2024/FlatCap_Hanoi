@@ -64,17 +64,21 @@ function DebtList() {
               <div>
                 <h5
                   className="card-title mb-0"
-                  style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                  style={{textDecoration: 'underline', cursor: 'pointer'}}
                   onClick={() => openEditModal(debt)}
                 >
                   {debt.name}
                 </h5>
-                <p className="card-text mb-0">Outstanding: ${debt.amount_outstanding}</p>
+                <p className="card-text mb-0">Outstanding: ${debt.total_amount != null && debt.amount_paid != null
+                  ? debt.total_amount - debt.amount_paid
+                  : ''}
+                </p>
                 <p className="card-text mb-0">Paid: ${debt.amount_paid}</p>
+                <p className="card-text mb-0">Total: ${debt.total_amount}</p>
                 <p className="card-text mb-0">Status: {debt.status}</p>
               </div>
               <div className="d-flex flex-wrap">
-                <button
+              <button
                   className="btn btn-secondary mr-2 mb-2"
                   onClick={() => openEditModal(debt)}
                 >

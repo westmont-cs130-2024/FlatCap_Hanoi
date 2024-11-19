@@ -46,6 +46,6 @@ class Api::V1::DebtsController < ApplicationController
 
   # Strong parameters for debt
   def debt_params
-    params.require(:debt).permit(:name, :amount_outstanding, :amount_paid, :category, :status)
+    params.require(:debt).permit(:name, :total_amount, :amount_paid, :category, :status)
   end
 end

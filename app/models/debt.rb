@@ -4,7 +4,7 @@ class Debt < ApplicationRecord
 
   # Validations for required fields
   validates :name, presence: true
-  validates :amount_outstanding, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :total_amount, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :amount_paid, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :category, presence: true
   validates :status, presence: true
