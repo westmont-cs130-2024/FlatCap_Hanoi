@@ -7,6 +7,7 @@ function MarshallModal({ asset, show, onClose, onSave }) {
         const updatedFields = { marshalled: true };
         if (didSell) {
             updatedFields.category = "Financial Accounts"; // Update category if sold
+            updatedFields.name = asset.name + " (sold)";
         }
         onSave(updatedFields); // Send updated fields to the parent component
         onClose();

@@ -113,7 +113,7 @@ function AssetList() {
                   className={`btn ${asset.valued ? 'btn-primary' : 'btn-secondary'} mr-2 mb-2`}
                   onClick={() => openModal(asset, 'Value')}
                 >
-                  Value
+                    {asset.valued ? 'Edit Value' : 'Value'}
                 </button>
                 <button
                   className={`btn ${asset.marshalled ? 'btn-primary' : 'btn-secondary'} mr-2 mb-2`}
