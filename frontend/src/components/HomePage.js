@@ -27,15 +27,15 @@ function HomePage() {
         assets.forEach((asset) => {
           totalItems++;
           if (!asset.inventoried) {
-            tasks.push({ text: `Inventory asset: ${asset.name}`, link: '/assets' });
+            tasks.push({ text: 'Inventory asset:', name: asset.name, link: '/assets' });
           } else if (!asset.valued) {
-            tasks.push({ text: `Value asset: ${asset.name}`, link: '/assets' });
+            tasks.push({ text: 'Value asset:', name: asset.name, link: '/assets' });
           } else if (!asset.marshalled) {
-            tasks.push({ text: `Marshal asset: ${asset.name}`, link: '/assets' });
+            tasks.push({ text: 'Marshal asset:', name: asset.name, link: '/assets' });
           } else if (!asset.administered) {
-            tasks.push({ text: `Administer asset: ${asset.name}`, link: '/assets' });
+            tasks.push({ text: 'Administer asset:', name: asset.name, link: '/assets' });
           } else {
-            completed.push({ text: `Completed all steps for asset: ${asset.name}`, link: '/assets' });
+            completed.push({ text: 'Completed all steps for asset:', name: asset.name, link: '/assets' });
             completedItems++;
           }
         });
@@ -43,11 +43,11 @@ function HomePage() {
         debts.forEach((debt) => {
           totalItems++;
           if (debt.status === 'Unpaid') {
-            tasks.push({ text: `Pay debt: ${debt.name}`, link: '/debts' });
+            tasks.push({ text: 'Pay debt:', name: debt.name, link: '/debts' });
           } else if (debt.status === 'Partially Paid') {
-            tasks.push({ text: `Complete payment for debt: ${debt.name}`, link: '/debts' });
+            tasks.push({ text: 'Complete payment for debt:', name: debt.name, link: '/debts' });
           } else if (debt.status === 'Paid') {
-            completed.push({ text: `Paid off debt: ${debt.name}`, link: '/debts' });
+            completed.push({ text: 'Paid off debt:', name: debt.name, link: '/debts' });
             completedItems++;
           }
         });
@@ -70,7 +70,7 @@ function HomePage() {
   };
 
   return (
-    <div className="home-page mt-5">
+    <div className="container mt-5">
       <Header />
 
       <div className="text-center mb-5">
@@ -106,14 +106,32 @@ function HomePage() {
                     onClick={() => handleTaskClick(task.link)}
                     style={{ cursor: 'pointer', backgroundColor: '#f8f9fa' }}
                   >
-                    <span>{task.text}</span>
+                    <span>
+                      <strong>{task.text}</strong> <em>{task.name}</em>
+                    </span>
                     <span className="badge bg-secondary">To Do</span>
                   </div>
                   {index < upcomingTasks.length - 1 && <hr className="task-divider" />}
                 </React.Fragment>
               ))
             ) : (
-              <p className="text-muted text-center">No upcoming tasks at the moment.</p>
+              <p className="text-muted text-center">
+                No upcoming tasks at the moment. Start by adding a{' '}
+                <span
+                  style={{ color: '#007bff', cursor: 'pointer', textDecoration: 'underline' }}
+                  onClick={() => navigate('/debts')}
+                >
+                  debt
+                </span>{' '}
+                or an{' '}
+                <span
+                  style={{ color: '#007bff', cursor: 'pointer', textDecoration: 'underline' }}
+                  onClick={() => navigate('/assets')}
+                >
+                  asset
+                </span>
+                .
+              </p>
             )}
           </div>
         </div>
@@ -130,7 +148,9 @@ function HomePage() {
                     onClick={() => handleTaskClick(task.link)}
                     style={{ cursor: 'pointer', backgroundColor: '#f8f9fa' }}
                   >
-                    <span>{task.text}</span>
+                    <span>
+                      <strong>{task.text}</strong> <em>{task.name}</em>
+                    </span>
                     <span className="badge bg-success">Completed</span>
                   </div>
                   {index < recentlyCompleted.length - 1 && <hr className="task-divider" />}
