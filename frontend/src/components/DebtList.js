@@ -3,6 +3,7 @@ import { getDebts, createDebt, deleteDebt, updateDebt } from '../services/api';
 import DebtModal from './DebtModal';
 import NewDebtModal from './NewDebtModal';
 import Header from './Header';
+import HelpButton from './HelpButton';
 
 function DebtList() {
   const [debts, setDebts] = useState([]);
@@ -74,6 +75,7 @@ function DebtList() {
       <div className="text-center mb-4">
         <h1 className="display-4">Manage Debts</h1>
         <p className="text-muted">Track and manage your debts efficiently.</p>
+        <HelpButton section="debts" />
         <button
           className="btn btn-primary btn-lg"
           onClick={() => setShowNewDebtModal(true)}

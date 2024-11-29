@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Header from './Header';
 import { getAssets, getDebts } from '../services/api';
 import '../styles/home.css';
@@ -9,6 +9,7 @@ function HomePage() {
   const [recentlyCompleted, setRecentlyCompleted] = useState([]);
   const [progress, setProgress] = useState(0);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,49 +22,80 @@ function HomePage() {
 
         const tasks = [];
         const completed = [];
-        let totalItems = 0;
-        let completedItems = 0;
+        let totalSteps = 0;
+        let completedSteps = 0;
 
+        const assetSteps = [
+          { key: 'inventoried', task: 'Inventory', past: 'Inventoried' },
+          { key: 'valued', task: 'Value', past: 'Valued' },
+          { key: 'marshalled', task: 'Marshal', past: 'Marshaled' },
+          { key: 'administered', task: 'Administer', past: 'Administered' },
+        ];
+
+        // Process assets
         assets.forEach((asset) => {
-          totalItems++;
-          if (!asset.inventoried) {
-            tasks.push({ text: 'Inventory asset:', name: asset.name, link: '/assets' });
-          } else if (!asset.valued) {
-            tasks.push({ text: 'Value asset:', name: asset.name, link: '/assets' });
-          } else if (!asset.marshalled) {
-            tasks.push({ text: 'Marshal asset:', name: asset.name, link: '/assets' });
-          } else if (!asset.administered) {
-            tasks.push({ text: 'Administer asset:', name: asset.name, link: '/assets' });
-          } else {
-            completed.push({ text: 'Completed all steps for asset:', name: asset.name, link: '/assets' });
-            completedItems++;
-          }
+          let nextTaskAdded = false;
+
+          assetSteps.forEach(({ key, task, past }, index) => {
+            totalSteps++;
+
+            if (!asset[key] && !nextTaskAdded) {
+              tasks.push({
+                text: `${task} asset:`,
+                name: asset.name,
+                link: '/assets',
+              });
+              nextTaskAdded = true; // Only add the first unmet step for this asset
+            } else if (asset[key]) {
+              completed.push({
+                text: `${past} asset:`,
+                name: asset.name,
+                link: '/assets',
+              });
+              completedSteps++;
+            }
+          });
         });
 
+        // Process debts
         debts.forEach((debt) => {
-          totalItems++;
+          totalSteps++;
+
           if (debt.status === 'Unpaid') {
             tasks.push({ text: 'Pay debt:', name: debt.name, link: '/debts' });
           } else if (debt.status === 'Partially Paid') {
-            tasks.push({ text: 'Complete payment for debt:', name: debt.name, link: '/debts' });
+            tasks.push({
+              text: 'Complete payment for debt:',
+              name: debt.name,
+              link: '/debts',
+            });
           } else if (debt.status === 'Paid') {
-            completed.push({ text: 'Paid off debt:', name: debt.name, link: '/debts' });
-            completedItems++;
+            completed.push({
+              text: 'Paid off debt:',
+              name: debt.name,
+              link: '/debts',
+            });
+            completedSteps++;
           }
         });
 
-        const progressPercentage = totalItems > 0 ? (completedItems / totalItems) * 100 : 0;
+        const progressPercentage = totalSteps > 0 ? (completedSteps / totalSteps) * 100 : 0;
 
-        setUpcomingTasks(tasks.slice(0, 5));
+        setUpcomingTasks(tasks.slice(0, 5)); // Show up to 5 tasks
         setRecentlyCompleted(completed);
         setProgress(progressPercentage);
+
+        // Redirect to FAQ page if user has no tasks and they came from sign-in
+        if (tasks.length === 0 && completed.length === 0 && location.state?.fromSignIn) {
+          navigate('/faq#overview', { state: { fromSignIn: true } });
+        }
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [location.state, navigate]);
 
   const handleTaskClick = (link) => {
     navigate(link);

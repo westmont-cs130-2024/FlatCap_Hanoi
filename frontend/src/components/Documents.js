@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getDocuments, uploadDocument, deleteDocument } from '../services/api';
 import Header from './Header';
+import HelpButton from './HelpButton';
 
 function Documents() {
   const [documents, setDocuments] = useState([]);
@@ -62,6 +63,7 @@ function Documents() {
       <div className="text-center mb-4">
         <h1 className="display-4">Manage Documents</h1>
         <p className="text-muted">Upload, view, and manage your documents here.</p>
+        <HelpButton section="documents" />
       </div>
 
       {/* Upload Section */}

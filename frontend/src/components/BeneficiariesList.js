@@ -3,6 +3,7 @@ import { getBeneficiaries, createBeneficiary, updateBeneficiary, deleteBeneficia
 import NewBeneficiaryModal from './NewBeneficiaryModal';
 import EditBeneficiaryModal from './EditBeneficiaryModal';
 import Header from './Header';
+import HelpButton from './HelpButton';
 
 function BeneficiaryList() {
     const [beneficiaries, setBeneficiaries] = useState([]);
@@ -67,6 +68,7 @@ function BeneficiaryList() {
             <div className="text-center mb-4">
                 <h1 className="display-4">Manage Beneficiaries</h1>
                 <p className="text-muted">Keep track of your beneficiaries and their assigned assets.</p>
+                <HelpButton section="beneficiaries" />
                 <button
                     className="btn btn-primary btn-lg"
                     onClick={() => setShowNewBeneficiaryModal(true)}

@@ -6,6 +6,7 @@ import ValueModal from './ValueModal';
 import MarshallModal from './MarshallModal';
 import AdministerModal from './AdministerModal';
 import Header from './Header';
+import HelpButton from './HelpButton';
 
 function AssetList() {
   const [assets, setAssets] = useState([]);
@@ -87,6 +88,7 @@ function AssetList() {
       <div className="text-center mb-4">
         <h1 className="display-4">Manage Assets</h1>
         <p className="text-muted">Track and manage your assets efficiently.</p>
+        <HelpButton section="assets" />
         <button
           className="btn btn-primary btn-lg"
           onClick={() => setShowNewAssetModal(true)}
