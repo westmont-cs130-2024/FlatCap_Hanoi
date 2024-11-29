@@ -21,28 +21,26 @@ const SignIn = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setSuccess(false);
-    try {
-      const response = await signInUser(formData);
-      
-      if (response.status === 200) {
-        setUser({
-          // THIS IS PROBABLY WHERE YOU WOULD ADD TO SO THAT OTHER ACCOUNT DATA FIELDS CAN SHOW UP
-          first_name: response.data.user.first_name,
-          last_name: response.data.user.last_name,
-        }); // Update the user context with the signed-in user's name
-        setSuccess(true);
-        setTimeout(() => navigate('/home'), 1000); // Redirect to home after a delay
-      } else {
-        setError('Failed to sign in. Please check your credentials.');
-      }
-    } catch (err) {
-      setError('Incorrect username and/or password');
+// src/components/SignIn.js
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
+  setSuccess(false);
+  try {
+    const response = await signInUser(formData);
+
+    if (response.status === 200) {
+      const { first_name, last_name, email, phone_number } = response.data.user;
+      setUser({ first_name, last_name, email, phone_number }); // Update context with all user data
+      setSuccess(true);
+      setTimeout(() => navigate('/home'), 1000); // Redirect to home after a delay
+    } else {
+      setError('Failed to sign in. Please check your credentials.');
     }
-  };
+  } catch (err) {
+    setError('Incorrect username and/or password');
+  }
+};
 
   return (
     <div className="container mt-5">

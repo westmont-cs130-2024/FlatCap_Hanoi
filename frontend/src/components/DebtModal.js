@@ -1,46 +1,84 @@
-// src/components/DebtModal.js
 import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Alert } from 'react-bootstrap';
 
 function DebtModal({ debt, onClose, onSave, onDelete }) {
-  // State for the debt fields, initialized to the values of the current debt
   const [editedDebt, setEditedDebt] = useState({
     name: debt.name,
     total_amount: debt.total_amount,
     amount_paid: debt.amount_paid,
     category: debt.category,
-    status: debt.status,
   });
 
-  const allowedCategories = [
-    "Loan",
-    "Mortgage",
-    "Credit Card",
-    "Medical",
-    "Other"
-  ];
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const allowedStatus = [
-    "Paid",
-    "Unpaid"
-  ];
+  const allowedCategories = ["Loan", "Mortgage", "Credit Card", "Medical", "Other"];
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setEditedDebt({
       ...editedDebt,
-      [e.target.name]: e.target.value
+      [name]: value,
     });
   };
 
+  const validate = () => {
+    const { name, total_amount, amount_paid, category } = editedDebt;
+    const totalAmount = parseFloat(total_amount) || 0;
+    const amountPaid = parseFloat(amount_paid) || 0;
+
+    if (!name || total_amount === '' || amount_paid === '' || !category) {
+      return 'All fields are required.';
+    }
+    if (totalAmount < 0 || amountPaid < 0) {
+      return 'Amounts cannot be negative.';
+    }
+    if (amountPaid > totalAmount) {
+      return 'Amount paid cannot exceed total amount.';
+    }
+    return ''; // No errors
+  };
+
   const handleSave = () => {
-    onSave(editedDebt); // Trigger save with updated debt details
+    const error = validate();
+    if (error) {
+      setErrorMessage(error);
+      return;
+    }
+
+    const totalAmount = parseFloat(editedDebt.total_amount);
+    const amountPaid = parseFloat(editedDebt.amount_paid);
+
+    const status =
+      amountPaid >= totalAmount
+        ? "Paid"
+        : amountPaid > 0
+        ? "Partially Paid"
+        : "Unpaid";
+
+    onSave({ ...editedDebt, status }); // Include calculated status when saving
+    setErrorMessage('');
     onClose();
   };
 
   const handleDelete = () => {
-    onDelete(debt.id); // Trigger delete for the debt
-    onClose();
+    const confirmed = window.confirm('Are you sure you want to delete this debt?');
+    if (confirmed) {
+      onDelete(debt.id);
+      onClose();
+    }
   };
+
+  const totalAmount = parseFloat(editedDebt.total_amount) || 0;
+  const amountPaid = parseFloat(editedDebt.amount_paid) || 0;
+
+  const status =
+    totalAmount || amountPaid >= 0
+      ? amountPaid >= totalAmount
+        ? "Paid"
+        : amountPaid > 0
+        ? "Partially Paid"
+        : "Unpaid"
+      : "";
 
   return (
     <Modal show onHide={onClose}>
@@ -48,9 +86,12 @@ function DebtModal({ debt, onClose, onSave, onDelete }) {
         <Modal.Title>Edit Debt - {debt.name}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
         <Form>
           <Form.Group>
-            <Form.Label>Debt Name</Form.Label>
+            <Form.Label className="fw-bold">
+              Debt Name <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               name="name"
@@ -60,27 +101,35 @@ function DebtModal({ debt, onClose, onSave, onDelete }) {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Total Amount</Form.Label>
+            <Form.Label className="fw-bold">
+              Total Amount <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               type="number"
-              name="amount_outstanding"
+              name="total_amount"
               value={editedDebt.total_amount}
               onChange={handleChange}
               placeholder="Enter total amount"
+              min="0"
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Amount Paid</Form.Label>
+            <Form.Label className="fw-bold">
+              Amount Paid <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               type="number"
               name="amount_paid"
               value={editedDebt.amount_paid}
               onChange={handleChange}
               placeholder="Enter amount paid"
+              min="0"
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Category</Form.Label>
+            <Form.Label className="fw-bold">
+              Category <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               as="select"
               name="category"
@@ -96,22 +145,20 @@ function DebtModal({ debt, onClose, onSave, onDelete }) {
             </Form.Control>
           </Form.Group>
           <Form.Group>
-            <Form.Label>Status</Form.Label>
-            <Form.Control
-              as="select"
-              name="status"
-              value={editedDebt.status}
-              onChange={handleChange}
+            <Form.Label className="fw-bold">Status:</Form.Label>
+            <p
+              className={`mb-0 ${
+                status === "Paid"
+                  ? "text-success"
+                  : status === "Partially Paid"
+                  ? "text-warning"
+                  : "text-danger"
+              }`}
             >
-              <option value="">Select a Status</option>
-              {allowedStatus.map((status) => (
-                <option key={status} value={status}>
-                  {status}
-                </option>
-              ))}
-              </Form.Control>
-                </Form.Group>
-                </Form>
+              <strong>{status}</strong>
+            </p>
+          </Form.Group>
+        </Form>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>

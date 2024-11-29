@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { getBeneficiaries, createBeneficiary, updateBeneficiary, deleteBeneficiary } from '../services/api';
 import NewBeneficiaryModal from './NewBeneficiaryModal';
-import EditBeneficiaryModal from './EditBeneficiaryModal'; // Import the new EditBeneficiaryModal
+import EditBeneficiaryModal from './EditBeneficiaryModal';
 import Header from './Header';
 
 function BeneficiaryList() {
     const [beneficiaries, setBeneficiaries] = useState([]);
     const [showNewBeneficiaryModal, setShowNewBeneficiaryModal] = useState(false);
-    const [selectedBeneficiary, setSelectedBeneficiary] = useState(null); // State for the selected beneficiary
+    const [selectedBeneficiary, setSelectedBeneficiary] = useState(null);
 
     useEffect(() => {
         const fetchBeneficiaries = async () => {
             try {
                 const response = await getBeneficiaries();
                 setBeneficiaries(response.data);
-            } catch (ex) {
-                console.error('Error fetching beneficiaries:', ex);
+            } catch (error) {
+                console.error('Error fetching beneficiaries:', error);
             }
         };
         fetchBeneficiaries();
@@ -26,8 +26,8 @@ function BeneficiaryList() {
             const response = await createBeneficiary(newBeneficiary);
             setBeneficiaries([...beneficiaries, response.data]);
             setShowNewBeneficiaryModal(false);
-        } catch (ex) {
-            console.error('Error creating beneficiary:', ex);
+        } catch (error) {
+            console.error('Error creating beneficiary:', error);
         }
     };
 
@@ -37,18 +37,21 @@ function BeneficiaryList() {
             setBeneficiaries(beneficiaries.map((beneficiary) =>
                 beneficiary.id === id ? response.data : beneficiary
             ));
-            setSelectedBeneficiary(null); // Close the modal after saving by resetting the selected beneficiary
-        } catch (ex) {
-            console.error('Error updating beneficiary:', ex);
+            setSelectedBeneficiary(null);
+        } catch (error) {
+            console.error('Error updating beneficiary:', error);
         }
     };
 
     const handleDeleteBeneficiary = async (id) => {
-        try {
-            await deleteBeneficiary(id);
-            setBeneficiaries(beneficiaries.filter((beneficiary) => beneficiary.id !== id));
-        } catch (ex) {
-            console.error('Error deleting beneficiary:', ex);
+        const confirmed = window.confirm("Are you sure you want to delete this beneficiary?");
+        if (confirmed) {
+            try {
+                await deleteBeneficiary(id);
+                setBeneficiaries(beneficiaries.filter((beneficiary) => beneficiary.id !== id));
+            } catch (error) {
+                console.error('Error deleting beneficiary:', error);
+            }
         }
     };
 
@@ -57,59 +60,69 @@ function BeneficiaryList() {
     };
 
     return (
-        <div className="container">
+        <div className="container mt-5">
             <Header />
-            <h1 className="display-4 mb-4">Beneficiaries</h1>
 
-            <button
-                className="btn btn-primary mb-3"
-                onClick={() => setShowNewBeneficiaryModal(true)}
-            >
-                Add New Beneficiary
-            </button>
+            {/* Page Title */}
+            <div className="text-center mb-4">
+                <h1 className="display-4">Manage Beneficiaries</h1>
+                <p className="text-muted">Keep track of your beneficiaries and their assigned assets.</p>
+                <button
+                    className="btn btn-primary btn-lg"
+                    onClick={() => setShowNewBeneficiaryModal(true)}
+                >
+                    Add New Beneficiary
+                </button>
+            </div>
 
-            <div>
-                {beneficiaries.map((beneficiary) => (
-                    <div className="card mb-4" key={beneficiary.id}>
-                        <div className="card-header bg-light">
-                            <small className="text-muted">{beneficiary.email}</small>
-                        </div>
-                        <div className="card-body d-flex justify-content-between">
-                            <div>
-                                <h5 className="card-title mb-1" style={{ cursor: 'pointer' }}>
-                                    {beneficiary.first_name} {beneficiary.last_name}
-                                </h5>
-                                <p className="card-text mb-0">{beneficiary.notes}</p>
-                                {/* Add this new section to display assigned assets */}
-                                {beneficiary.assets && beneficiary.assets.length > 0 && (
-                                    <p className="card-text mb-0" style={{ color: 'blue' }}>
-                                        Assigned assets: {' '}
-                                        {beneficiary.assets.map((asset) => (
-                                            <span key={asset.id}>
-                                                {asset.name}
-                                                {beneficiary.assets.indexOf(asset) !== beneficiary.assets.length - 1 && ', '}
-                                            </span>
-                                        ))}
-                                    </p>
-                                )}
-                            </div>
-                            <div className="d-flex flex-column align-items-end">
-                                <button
-                                    className="btn btn-secondary mb-2"
-                                    onClick={() => openEditBeneficiaryModal(beneficiary)} // Open Edit Modal on click
-                                >
-                                    Edit
-                                </button>
-                                <button
-                                    className="btn btn-danger"
-                                    onClick={() => handleDeleteBeneficiary(beneficiary.id)}
-                                >
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
+            {/* Beneficiary List */}
+            <div className="bg-light p-4 rounded shadow">
+                <h5 className="text-primary mb-4">Beneficiary List</h5>
+                {beneficiaries.length === 0 ? (
+                    <div className="alert alert-info text-center" role="alert">
+                        No beneficiaries found. Add a new beneficiary to get started.
                     </div>
-                ))}
+                ) : (
+                    <ul className="list-group">
+                        {beneficiaries.map((beneficiary) => (
+                            <li
+                                key={beneficiary.id}
+                                className="list-group-item d-flex justify-content-between align-items-center"
+                            >
+                                <div>
+                                    <h5
+                                        className="mb-1"
+                                        style={{ cursor: 'pointer', color: 'black' }}
+                                        onClick={() => openEditBeneficiaryModal(beneficiary)}
+                                    >
+                                        {beneficiary.first_name} {beneficiary.last_name}
+                                    </h5>
+                                    <p className="mb-1 text-muted">{beneficiary.email}</p>
+                                    {beneficiary.notes && <p className="mb-0">{beneficiary.notes}</p>}
+                                    {beneficiary.assets && beneficiary.assets.length > 0 && (
+                                        <small className="text-muted">
+                                            Assigned assets: {beneficiary.assets.map(asset => asset.name).join(', ')}
+                                        </small>
+                                    )}
+                                </div>
+                                <div className="d-flex gap-2">
+                                    <button
+                                        className="btn btn-sm btn-secondary"
+                                        onClick={() => openEditBeneficiaryModal(beneficiary)}
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        className="btn btn-sm btn-danger"
+                                        onClick={() => handleDeleteBeneficiary(beneficiary.id)}
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
 
             {/* New Beneficiary Modal */}
@@ -123,7 +136,7 @@ function BeneficiaryList() {
             {selectedBeneficiary && (
                 <EditBeneficiaryModal
                     beneficiary={selectedBeneficiary}
-                    onClose={() => setSelectedBeneficiary(null)} // Close modal by setting selectedBeneficiary to null
+                    onClose={() => setSelectedBeneficiary(null)}
                     onSave={handleUpdateBeneficiary}
                 />
             )}

@@ -1,4 +1,3 @@
-// src/components/NewAssetModal.js
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
@@ -11,7 +10,6 @@ function NewAssetModal({ show, onClose, onCreate }) {
     description: '',
   });
 
-  // Define the allowed categories for the dropdown
   const allowedCategories = [
     "Real Estate", 
     "Vehicles", 
@@ -28,6 +26,12 @@ function NewAssetModal({ show, onClose, onCreate }) {
   };
 
   const handleSubmit = () => {
+    // Validation: Ensure required fields are filled
+    if (!newAsset.name || !newAsset.category || !newAsset.acquisition_date || !newAsset.location) {
+      alert("All fields marked with * are required.");
+      return;
+    }
+
     onCreate({
       ...newAsset,
       inventoried: true,
@@ -36,6 +40,7 @@ function NewAssetModal({ show, onClose, onCreate }) {
       administered: false,
       value: 0,
     });
+
     setNewAsset({
       name: '',
       category: '',
@@ -43,6 +48,7 @@ function NewAssetModal({ show, onClose, onCreate }) {
       location: '',
       description: '',
     });
+
     onClose();
   };
 
@@ -54,7 +60,9 @@ function NewAssetModal({ show, onClose, onCreate }) {
       <Modal.Body>
         <Form>
           <Form.Group>
-            <Form.Label>Asset Name</Form.Label>
+            <Form.Label>
+              Asset Name <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               name="name"
@@ -64,7 +72,9 @@ function NewAssetModal({ show, onClose, onCreate }) {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Category</Form.Label>
+            <Form.Label>
+              Category <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               as="select"
               name="category"
@@ -80,7 +90,9 @@ function NewAssetModal({ show, onClose, onCreate }) {
             </Form.Control>
           </Form.Group>
           <Form.Group>
-            <Form.Label>Acquisition Date</Form.Label>
+            <Form.Label>
+              Acquisition Date <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               type="date"
               name="acquisition_date"
@@ -89,7 +101,9 @@ function NewAssetModal({ show, onClose, onCreate }) {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Location</Form.Label>
+            <Form.Label>
+              Location <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               name="location"
@@ -105,7 +119,7 @@ function NewAssetModal({ show, onClose, onCreate }) {
               name="description"
               value={newAsset.description}
               onChange={handleChange}
-              placeholder="Enter description"
+              placeholder="Enter description (optional)"
             />
           </Form.Group>
         </Form>

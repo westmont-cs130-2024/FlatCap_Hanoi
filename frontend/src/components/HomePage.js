@@ -5,7 +5,7 @@ import '../styles/home.css';
 
 function HomePage() {
   return (
-    <div className="home-page">
+    <div className="container mt-5">
       <Header /> {/* Use the Header component */}
 
       {/* Progress Bar */}
