@@ -4,10 +4,22 @@ class Api::V1::BeneficiariesController < ApplicationController
   # GET /api/v1/beneficiaries
   def index
     user = User.find(request.session['user_id'])
-    @beneficiaries = user.beneficiaries.includes(:assets).all
-    render json: @beneficiaries, include: {
-      assets: { only: [:id, :name] }
-    }
+
+    # Check if we want to include assets
+    if params[:include_assets] == 'true'
+      @beneficiaries = user.beneficiaries.includes(assets: :beneficiaries)
+      render json: @beneficiaries, include: {
+        assets: {
+          only: [:id, :name, :value, :valued],
+          methods: [:beneficiary_ids]
+        }
+      }
+    else
+      @beneficiaries = user.beneficiaries.includes(:assets)
+      render json: @beneficiaries, include: {
+        assets: { only: [:id, :name] }
+      }
+    end
   end
 
   # POST /api/v1/beneficiaries
