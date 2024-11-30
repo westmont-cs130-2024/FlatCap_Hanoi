@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_11_18_052006) do
+ActiveRecord::Schema[7.2].define(version: 2024_11_30_174130) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -54,6 +54,10 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_18_052006) do
     t.boolean "marshalled", default: false
     t.boolean "administered", default: false
     t.integer "value"
+    t.datetime "inventoried_at"
+    t.datetime "valued_at"
+    t.datetime "marshalled_at"
+    t.datetime "administered_at"
     t.index ["user_id"], name: "index_assets_on_user_id"
   end
 
@@ -97,13 +101,13 @@ ActiveRecord::Schema[7.2].define(version: 2024_11_18_052006) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.string "first_name", null: false
     t.string "last_name", null: false
     t.string "phone_number"
+    t.string "email", null: false
     t.string "password", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 

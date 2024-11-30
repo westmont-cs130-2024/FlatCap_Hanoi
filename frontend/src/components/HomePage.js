@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Header from './Header';
 import { getAssets, getDebts } from '../services/api';
 import '../styles/home.css';
+import HelpButton from './HelpButton';
+import { format } from 'date-fns'; // Add this for formatting dates
 
 function HomePage() {
   const [upcomingTasks, setUpcomingTasks] = useState([]);
@@ -16,51 +18,52 @@ function HomePage() {
       try {
         const assetsResponse = await getAssets();
         const debtsResponse = await getDebts();
-
+    
         const assets = assetsResponse.data;
         const debts = debtsResponse.data;
-
+    
         const tasks = [];
         const completed = [];
         let totalSteps = 0;
         let completedSteps = 0;
-
+    
         const assetSteps = [
-          { key: 'inventoried', task: 'Inventory', past: 'Inventoried' },
-          { key: 'valued', task: 'Value', past: 'Valued' },
-          { key: 'marshalled', task: 'Marshal', past: 'Marshaled' },
-          { key: 'administered', task: 'Administer', past: 'Administered' },
+          { key: 'inventoried', task: 'Inventory', past: 'Inventoried', timestampKey: 'inventoried_at' },
+          { key: 'valued', task: 'Value', past: 'Valued', timestampKey: 'valued_at' },
+          { key: 'marshalled', task: 'Marshal', past: 'Marshaled', timestampKey: 'marshalled_at' },
+          { key: 'administered', task: 'Administer', past: 'Administered', timestampKey: 'administered_at' },
         ];
-
+    
         // Process assets
         assets.forEach((asset) => {
           let nextTaskAdded = false;
-
-          assetSteps.forEach(({ key, task, past }, index) => {
+    
+          assetSteps.forEach(({ key, task, past, timestampKey }) => {
             totalSteps++;
-
+    
             if (!asset[key] && !nextTaskAdded) {
               tasks.push({
                 text: `${task} asset:`,
                 name: asset.name,
                 link: '/assets',
               });
-              nextTaskAdded = true; // Only add the first unmet step for this asset
-            } else if (asset[key]) {
+              nextTaskAdded = true;
+            } else if (asset[key] && asset[timestampKey]) {
               completed.push({
                 text: `${past} asset:`,
                 name: asset.name,
                 link: '/assets',
+                timestamp: asset[timestampKey],
               });
               completedSteps++;
             }
           });
         });
-
+    
         // Process debts
         debts.forEach((debt) => {
           totalSteps++;
-
+    
           if (debt.status === 'Unpaid') {
             tasks.push({ text: 'Pay debt:', name: debt.name, link: '/debts' });
           } else if (debt.status === 'Partially Paid') {
@@ -74,17 +77,21 @@ function HomePage() {
               text: 'Paid off debt:',
               name: debt.name,
               link: '/debts',
+              timestamp: debt.updated_at || debt.created_at,
             });
             completedSteps++;
           }
         });
-
+    
+        // Sort completed tasks by timestamp in descending order
+        completed.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
         const progressPercentage = totalSteps > 0 ? (completedSteps / totalSteps) * 100 : 0;
-
+    
         setUpcomingTasks(tasks.slice(0, 5)); // Show up to 5 tasks
         setRecentlyCompleted(completed);
         setProgress(progressPercentage);
-
+    
         // Redirect to FAQ page if user has no tasks and they came from sign-in
         if (tasks.length === 0 && completed.length === 0 && location.state?.fromSignIn) {
           navigate('/faq#overview', { state: { fromSignIn: true } });
@@ -108,6 +115,7 @@ function HomePage() {
       <div className="text-center mb-5">
         <h1 className="display-4">Estate Management</h1>
         <p className="text-muted">Stay on top of your estate tasks and progress.</p>
+        <HelpButton section="overview" />
       </div>
 
       {/* Progress Bar */}
@@ -183,7 +191,9 @@ function HomePage() {
                     <span>
                       <strong>{task.text}</strong> <em>{task.name}</em>
                     </span>
-                    <span className="badge bg-success">Completed</span>
+                    <span className="badge bg-success">
+                      {format(new Date(task.timestamp), 'MMMM d, yyyy h:mm a')}
+                    </span>
                   </div>
                   {index < recentlyCompleted.length - 1 && <hr className="task-divider" />}
                 </React.Fragment>
