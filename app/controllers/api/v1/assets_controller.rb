@@ -35,7 +35,15 @@ class Api::V1::AssetsController < ApplicationController
 
   def update
     @asset = Asset.find(params[:id])
-    if @asset.update(asset_params)
+    updated_params = asset_params
+  
+    # Update timestamps for steps
+    updated_params[:inventoried_at] = Time.current if updated_params[:inventoried] == true
+    updated_params[:valued_at] = Time.current if updated_params[:valued] == true
+    updated_params[:marshalled_at] = Time.current if updated_params[:marshalled] == true
+    updated_params[:administered_at] = Time.current if updated_params[:administered] == true
+  
+    if @asset.update(updated_params)
       render json: @asset, status: :ok
     else
       render json: { errors: @asset.errors.full_messages }, status: :unprocessable_entity

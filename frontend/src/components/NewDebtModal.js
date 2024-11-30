@@ -1,6 +1,5 @@
-// src/components/NewDebtModal.js
 import React, { useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Alert } from 'react-bootstrap';
 
 function NewDebtModal({ show, onClose, onCreate }) {
   const [newDebt, setNewDebt] = useState({
@@ -8,41 +7,75 @@ function NewDebtModal({ show, onClose, onCreate }) {
     total_amount: '',
     amount_paid: '',
     category: '',
-    status: '',
   });
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const allowedCategories = [
-    "Loan",
-    "Mortgage",
-    "Credit Card",
-    "Medical",
-    "Other"
-  ];
-
-  const allowedStatus = [
-    "Paid",
-    "Unpaid"
-  ];
-
+  const allowedCategories = ["Loan", "Mortgage", "Credit Card", "Medical", "Other"];
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
     setNewDebt({
       ...newDebt,
-      [e.target.name]: e.target.value
+      [name]: value,
     });
   };
 
+  const validate = () => {
+    const { name, total_amount, amount_paid, category } = newDebt;
+    const totalAmount = parseFloat(total_amount) || 0;
+    const amountPaid = parseFloat(amount_paid) || 0;
+
+    if (!name || !total_amount || !amount_paid || !category) {
+      return 'All fields are required.';
+    }
+    if (totalAmount < 0 || amountPaid < 0) {
+      return 'Amounts cannot be negative.';
+    }
+    if (amountPaid > totalAmount) {
+      return 'Amount paid cannot exceed total amount.';
+    }
+    return ''; // No errors
+  };
+
   const handleSubmit = () => {
-    onCreate(newDebt);
+    const error = validate();
+    if (error) {
+      setErrorMessage(error);
+      return;
+    }
+
+    const totalAmount = parseFloat(newDebt.total_amount);
+    const amountPaid = parseFloat(newDebt.amount_paid);
+
+    const status =
+      amountPaid >= totalAmount
+        ? "Paid"
+        : amountPaid > 0
+        ? "Partially Paid"
+        : "Unpaid";
+
+    onCreate({ ...newDebt, status }); // Include calculated status when creating
     setNewDebt({
       name: '',
       total_amount: '',
       amount_paid: '',
       category: '',
-      status: '',
     });
+    setErrorMessage('');
     onClose();
   };
+
+  const totalAmount = parseFloat(newDebt.total_amount) || 0;
+  const amountPaid = parseFloat(newDebt.amount_paid) || 0;
+
+  const status =
+    totalAmount && amountPaid
+      ? amountPaid >= totalAmount
+        ? "Paid"
+        : amountPaid > 0
+        ? "Partially Paid"
+        : "Unpaid"
+      : ""; // Blank if either value is not entered
 
   return (
     <Modal show={show} onHide={onClose}>
@@ -50,9 +83,12 @@ function NewDebtModal({ show, onClose, onCreate }) {
         <Modal.Title>Add New Debt</Modal.Title>
       </Modal.Header>
       <Modal.Body>
+        {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
         <Form>
           <Form.Group>
-            <Form.Label>Debt Name</Form.Label>
+            <Form.Label className="fw-bold">
+              Debt Name <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               name="name"
@@ -62,27 +98,35 @@ function NewDebtModal({ show, onClose, onCreate }) {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Total Amount</Form.Label>
+            <Form.Label className="fw-bold">
+              Total Amount <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               type="number"
               name="total_amount"
               value={newDebt.total_amount}
               onChange={handleChange}
               placeholder="Enter total amount"
+              min="0"
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Amount Paid</Form.Label>
+            <Form.Label className="fw-bold">
+              Amount Paid <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               type="number"
               name="amount_paid"
               value={newDebt.amount_paid}
               onChange={handleChange}
               placeholder="Enter amount paid"
+              min="0"
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Category</Form.Label>
+            <Form.Label className="fw-bold">
+              Category <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               as="select"
               name="category"
@@ -98,20 +142,20 @@ function NewDebtModal({ show, onClose, onCreate }) {
             </Form.Control>
           </Form.Group>
           <Form.Group>
-            <Form.Label>Status</Form.Label>
-            <Form.Control
-              as="select"
-              name="status"
-              value={newDebt.status}
-              onChange={handleChange}
+            <Form.Label className="fw-bold">Status</Form.Label>
+            <p
+              className={`mb-0 ${
+                status === "Paid"
+                  ? "text-success"
+                  : status === "Partially Paid"
+                  ? "text-warning"
+                  : status === "Unpaid"
+                  ? "text-danger"
+                  : ""
+              }`}
             >
-              <option value="">Select a Status</option>
-              {allowedStatus.map((status) => (
-                <option key={status} value={status}>
-                  {status}
-                </option>
-              ))}
-            </Form.Control>
+              <strong>{status || "—"}</strong> {/* Show a dash if blank */}
+            </p>
           </Form.Group>
         </Form>
       </Modal.Body>

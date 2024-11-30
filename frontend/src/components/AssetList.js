@@ -1,155 +1,179 @@
-// src/components/AssetList.js
 import React, { useState, useEffect } from 'react';
 import { getAssets, createAsset, deleteAsset, updateAsset } from '../services/api';
-import { getBeneficiaries, createBeneficiary, updateBeneficiary, deleteBeneficiary } from '../services/api';
 import AssetModal from './AssetModal';
 import NewAssetModal from './NewAssetModal';
 import ValueModal from './ValueModal';
 import MarshallModal from './MarshallModal';
 import AdministerModal from './AdministerModal';
 import Header from './Header';
+import HelpButton from './HelpButton';
 
 function AssetList() {
   const [assets, setAssets] = useState([]);
+  const [sortedAssets, setSortedAssets] = useState({});
   const [selectedAsset, setSelectedAsset] = useState(null);
-  const [modalType, setModalType] = useState(null); // Tracks which modal to show
+  const [modalType, setModalType] = useState(null);
   const [showNewAssetModal, setShowNewAssetModal] = useState(false);
 
-  // Fetch assets from the API
   useEffect(() => {
     const fetchAssets = async () => {
-      try {
-        const response = await getAssets();
-        setAssets(response.data);
-      } catch(ex) {
-        console.log("Error occurred: ", ex.status, ex.response);
-      }
+      const response = await getAssets();
+      const assets = response.data;
+
+      // Sort assets by category
+      const categorizedAssets = assets.reduce((categories, asset) => {
+        const category = asset.category || 'Uncategorized';
+        if (!categories[category]) {
+          categories[category] = [];
+        }
+        categories[category].push(asset);
+        return categories;
+      }, {});
+
+      setAssets(assets);
+      setSortedAssets(categorizedAssets);
     };
     fetchAssets();
   }, []);
 
-  // Open edit modal for an asset
-    // Open a specific modal for an asset
-    const openModal = (asset, type) => {
-        setSelectedAsset(asset);
-        setModalType(type);
-    };
+  const openModal = (asset, type) => {
+    setSelectedAsset(asset);
+    setModalType(type);
+  };
 
-    const closeModal = () => {
-        setSelectedAsset(null);
-        setModalType(null);
-    };
+  const closeModal = () => {
+    setSelectedAsset(null);
+    setModalType(null);
+  };
 
-  // Save changes to an asset
   const handleSave = async (updatedAsset) => {
-    await updateAsset(selectedAsset.id, updatedAsset); // API call to update asset
-    const response = await getAssets(); // Refresh asset list
+    await updateAsset(selectedAsset.id, updatedAsset);
+    const response = await getAssets();
+    const categorizedAssets = response.data.reduce((categories, asset) => {
+      const category = asset.category || 'Uncategorized';
+      if (!categories[category]) {
+        categories[category] = [];
+      }
+      categories[category].push(asset);
+      return categories;
+    }, {});
+
     setAssets(response.data);
+    setSortedAssets(categorizedAssets);
     closeModal();
   };
 
-  // Delete an asset
   const handleDelete = async (assetId) => {
-    await deleteAsset(assetId);
-    setAssets(assets.filter((a) => a.id !== assetId)); // Update state after deletion
+    const confirmed = window.confirm('Are you sure you want to delete this asset?');
+    if (confirmed) {
+      await deleteAsset(assetId);
+      const updatedAssets = assets.filter((a) => a.id !== assetId);
+      const categorizedAssets = updatedAssets.reduce((categories, asset) => {
+        const category = asset.category || 'Uncategorized';
+        if (!categories[category]) {
+          categories[category] = [];
+        }
+        categories[category].push(asset);
+        return categories;
+      }, {});
+
+      setAssets(updatedAssets);
+      setSortedAssets(categorizedAssets);
+    }
   };
 
   return (
-    
-    <div className="container">
+    <div className="container mt-5">
       <Header />
-      <h1 className="display-4 mb-4">Assets</h1>
+      <div className="text-center mb-4">
+        <h1 className="display-4">Manage Assets</h1>
+        <p className="text-muted">Track and manage your assets efficiently.</p>
+        <HelpButton section="assets" />
+        <button
+          className="btn btn-primary btn-lg"
+          onClick={() => setShowNewAssetModal(true)}
+        >
+          Add New Asset
+        </button>
+      </div>
 
-      <button
-        className="btn btn-primary mb-3"
-        onClick={() => setShowNewAssetModal(true)}
-      >
-        Add New Asset
-      </button>
-
-      <div>
-        {assets.map((asset) => (
-          <div className="card mb-4" key={asset.id}>
-            <div className="card-header">
-              <small className="text-muted">{asset.category}</small>
-            </div>
-            <div className="card-body d-flex justify-content-between align-items-center">
-                <div>
-                    <h5
-                        className="card-title mb-0"
-                        style={{textDecoration: 'underline', cursor: 'pointer'}}
+      {Object.keys(sortedAssets).length === 0 ? (
+        <div className="alert alert-info text-center shadow-sm p-4 bg-light rounded">
+          No assets found. Click <strong>Add New Asset</strong> to get started.
+        </div>
+      ) : (
+        Object.entries(sortedAssets).map(([category, assets]) => (
+          <div key={category} className="mb-4">
+            <div className="p-4 bg-light rounded shadow">
+              <h4 className="text-secondary">{category}</h4>
+              <ul className="list-group mt-3">
+                {assets.map((asset) => (
+                  <li
+                    key={asset.id}
+                    className="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h5
+                        style={{ cursor: 'pointer', color: 'black' }}
                         onClick={() => openModal(asset, 'Inventory')}
-                    >
+                      >
                         {asset.name}
-                    </h5>
-                    <p className="card-text mb-0">{asset.description}</p>
-                    {/* Conditionally display the value if "valued" is true */}
-                    {asset.valued && (
-                        <p className="card-text font-weight-bold text-success mb-0">
-                            Value: ${asset.value?.toLocaleString() || 'N/A'}
+                      </h5>
+                      <p className="mb-1 text-muted">
+                        <strong>Description:</strong>{' '}
+                        {asset.description || 'No description provided'}
+                      </p>
+                      {asset.valued && (
+                        <p className="mb-1 text-success">
+                          <strong>Value:</strong> ${asset.value?.toLocaleString() || 'N/A'}
                         </p>
-                    )}
-                    {/* Display administered beneficiaries */}
-                    {asset.administered && asset.beneficiaries && asset.beneficiaries.length > 0 && (
-                        <p className="card-text mb-0" style={{ color: 'blue' }}>
-                            Administered to: {' '}
-                            {asset.beneficiaries.map((beneficiary) => (
-                                <span key={beneficiary.id}>
-                                    {beneficiary.first_name} {beneficiary.last_name}
-                                    {asset.beneficiaries.indexOf(beneficiary) !== asset.beneficiaries.length - 1 && ', '}
-                                </span>
-                            ))}
-                        </p>
-                    )}
-                </div>
-                <div className="d-flex flex-wrap">
-                    <button
-                  className={`btn ${asset.inventoried ? 'btn-primary' : 'btn-secondary'} mr-2 mb-2`}
-                  onClick={() => openModal(asset, 'Inventory')}
-                >
-                  Inventory
-                </button>
-                <button
-                  className={`btn ${asset.valued ? 'btn-primary' : 'btn-secondary'} mr-2 mb-2`}
-                  onClick={() => openModal(asset, 'Value')}
-                >
-                    {asset.valued ? 'Edit Value' : 'Value'}
-                </button>
-                <button
-                  className={`btn ${asset.marshalled ? 'btn-primary' : 'btn-secondary'} mr-2 mb-2`}
-                  onClick={() => openModal(asset, 'Marshall')}
-                >
-                  Marshal
-                </button>
-                <button
-                  className={`btn ${asset.administered ? 'btn-primary' : 'btn-secondary'} mr-2 mb-2`}
-                  onClick={() => openModal(asset, 'Administer')}
-                >
-                  Administer
-                </button>
-                <button
-                  className="btn btn-danger ml-2 mb-2"
-                  onClick={() => handleDelete(asset.id)}
-                >
-                  Delete
-                </button>
-              </div>
+                      )}
+                      {asset.administered && asset.beneficiaries?.length > 0 && (
+                        <small className="text-muted">
+                          Assigned to: {asset.beneficiaries.map((b) => b.first_name).join(', ')}
+                        </small>
+                      )}
+                    </div>
+                    <div className="d-flex flex-wrap gap-2">
+                      <button
+                        className={`btn btn-sm ${asset.inventoried ? 'btn-primary' : 'btn-secondary'}`}
+                        onClick={() => openModal(asset, 'Inventory')}
+                      >
+                        Inventory
+                      </button>
+                      <button
+                        className={`btn btn-sm ${asset.valued ? 'btn-primary' : 'btn-secondary'}`}
+                        onClick={() => openModal(asset, 'Value')}
+                      >
+                        {asset.valued ? 'Edit Value' : 'Value'}
+                      </button>
+                      <button
+                        className={`btn btn-sm ${asset.marshalled ? 'btn-primary' : 'btn-secondary'}`}
+                        onClick={() => openModal(asset, 'Marshall')}
+                      >
+                        Marshal
+                      </button>
+                      <button
+                        className={`btn btn-sm ${asset.administered ? 'btn-primary' : 'btn-secondary'}`}
+                        onClick={() => openModal(asset, 'Administer')}
+                      >
+                        Administer
+                      </button>
+                      <button
+                        className="btn btn-sm btn-danger"
+                        onClick={() => handleDelete(asset.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
-        ))}
-      </div>
-      {/* New Asset Modal */}
-      <NewAssetModal
-          show={showNewAssetModal}
-          onClose={() => setShowNewAssetModal(false)}
-          onCreate={async (newAsset) => {
-              await createAsset(newAsset);
-              const response = await getAssets();
-              setAssets(response.data);
-          }}
-      />
+        ))
+      )}
 
-      {/* Edit Asset Modal */}
       {modalType === 'Inventory' && selectedAsset && (
         <AssetModal
           asset={selectedAsset}
@@ -159,7 +183,6 @@ function AssetList() {
         />
       )}
 
-      {/* Value Modal */}
       {modalType === 'Value' && selectedAsset && (
         <ValueModal
           asset={selectedAsset}
@@ -169,7 +192,6 @@ function AssetList() {
         />
       )}
 
-      {/* Marshall Modal */}
       {modalType === 'Marshall' && selectedAsset && (
         <MarshallModal
           asset={selectedAsset}
@@ -179,7 +201,6 @@ function AssetList() {
         />
       )}
 
-      {/* Administer Modal */}
       {modalType === 'Administer' && selectedAsset && (
         <AdministerModal
           asset={selectedAsset}
@@ -189,6 +210,25 @@ function AssetList() {
         />
       )}
 
+      <NewAssetModal
+        show={showNewAssetModal}
+        onClose={() => setShowNewAssetModal(false)}
+        onCreate={async (newAsset) => {
+          await createAsset(newAsset);
+          const response = await getAssets();
+          const categorizedAssets = response.data.reduce((categories, asset) => {
+            const category = asset.category || 'Uncategorized';
+            if (!categories[category]) {
+              categories[category] = [];
+            }
+            categories[category].push(asset);
+            return categories;
+          }, {});
+
+          setAssets(response.data);
+          setSortedAssets(categorizedAssets);
+        }}
+      />
     </div>
   );
 }

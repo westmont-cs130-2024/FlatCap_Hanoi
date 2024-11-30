@@ -1,17 +1,17 @@
-// src/components/CreateAccount.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUser } from '../services/api';
 
 const CreateAccount = () => {
   const [formData, setFormData] = useState({
-    first_name: '',   // Change to snake_case
-    last_name: '',    // Change to snake_case
+    first_name: '',
+    last_name: '',
     email: '',
-    phone_number: '', // Change to snake_case
+    phone_number: '',
     password: '',
   });
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState(false); // Added success state
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -23,10 +23,13 @@ const CreateAccount = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccess(false);
     try {
       const response = await createUser(formData);
       if (response.status === 201) {
-        navigate('/sign-in'); // Redirect to sign-in on successful account creation
+        setSuccess(true); // Show success message
+        setTimeout(() => navigate('/sign-in'), 2000); // Redirect to sign-in after a delay
       }
     } catch (err) {
       setError('Failed to create account. Please try again.');
@@ -36,6 +39,11 @@ const CreateAccount = () => {
   return (
     <div className="container mt-5">
       <h2 className="mb-4">Create Account</h2>
+      {success && (
+        <div className="alert alert-success">
+          Account created successfully! Redirecting to sign-in...
+        </div>
+      )}
       {error && <div className="alert alert-danger">{error}</div>}
       <form onSubmit={handleSubmit}>
         <div className="mb-3">

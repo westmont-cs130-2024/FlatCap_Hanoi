@@ -1,51 +1,68 @@
-// src/components/AccountPage.js
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../context/UserContext';
-import Header from './Header'; // Import the Header component
+import Header from './Header';
 
 const AccountPage = () => {
-    const { user, setUser } = useContext(UserContext); // Access user data and the method to update user context
-    const navigate = useNavigate(); // React Router navigation
+  const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
-    // Logout handler
-    const handleLogout = () => {
-        // Clear user context
-        setUser(null);
+  // Logout handler
+  const handleLogout = () => {
+    setUser(null); // Clear user context
+    navigate('/sign-in'); // Redirect to sign-in page
+  };
 
-        // Redirect to login page
-        navigate('/sign-in');
-    };
+  return (
+    <>
+      
 
-    return (
-        <>
-            {/* Include Header at the top */}
-            <Header />
+      <div className="container mt-5">
+      <Header />
+        <div className="text-center mb-4">
+          <h1 className="display-4">Your Account</h1>
+          <p className="text-muted">View and manage your account details here.</p>
+        </div>
 
-            <div className="container mt-5">
-                <h2>Account Details</h2>
-                <div className="card">
-                    <div className="card-body">
-                        <h5 className="card-title">
-                            {user?.first_name} {user?.last_name}
-                        </h5>
-                        <p className="card-text">
-                            Email: {user?.email || 'No email available'}
-                        </p>
-                        {/* Add other account-related details here */}
-                    </div>
-                </div>
-
-                {/* Logout Button */}
-                <button
-                    className="btn btn-danger mt-3"
-                    onClick={handleLogout}
-                >
-                    Logout
-                </button>
+        {/* Account Details Section */}
+        <div className="p-4 bg-light rounded shadow">
+          <h5 className="text-primary mb-3">Account Details</h5>
+          {user ? (
+            <ul className="list-group">
+              <li className="list-group-item d-flex justify-content-between align-items-center">
+                <strong>Name:</strong>
+                <span>
+                  {user.first_name} {user.last_name}
+                </span>
+              </li>
+              <li className="list-group-item d-flex justify-content-between align-items-center">
+                <strong>Email:</strong>
+                <span>{user.email || 'No email available'}</span>
+              </li>
+              <li className="list-group-item d-flex justify-content-between align-items-center">
+                <strong>Phone Number:</strong>
+                <span>{user.phone_number || 'No phone number available'}</span>
+              </li>
+            </ul>
+          ) : (
+            <div className="alert alert-warning text-center" role="alert">
+              No account information available. Please sign in.
             </div>
-        </>
-    );
+          )}
+        </div>
+
+        {/* Logout Section */}
+        <div className="text-center mt-4">
+          <button
+            className="btn btn-danger btn-lg"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </>
+  );
 };
 
 export default AccountPage;

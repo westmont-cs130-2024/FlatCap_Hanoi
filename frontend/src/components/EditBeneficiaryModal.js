@@ -16,7 +16,7 @@ function EditBeneficiaryModal({ beneficiary, onClose, onSave }) {
             email: beneficiary.email,
             notes: beneficiary.notes,
         });
-    }, [beneficiary]); // Reset the state when the beneficiary prop changes
+    }, [beneficiary]);
 
     const handleChange = (e) => {
         setEditedBeneficiary({
@@ -26,19 +26,24 @@ function EditBeneficiaryModal({ beneficiary, onClose, onSave }) {
     };
 
     const handleSave = () => {
-        onSave(beneficiary.id, editedBeneficiary); // Trigger save with updated beneficiary details
-        onClose(); // Close modal after saving
+        if (!editedBeneficiary.first_name || !editedBeneficiary.last_name || !editedBeneficiary.email) {
+            alert("First Name, Last Name, and Email are required.");
+            return;
+        }
+
+        onSave(beneficiary.id, editedBeneficiary);
+        onClose();
     };
 
     return (
-        <Modal show={true} onHide={onClose}> {/* Ensure 'onHide' triggers closing */}
+        <Modal show onHide={onClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Edit Beneficiary - {beneficiary.first_name} {beneficiary.last_name}</Modal.Title>
+                <Modal.Title>Edit Beneficiary</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
                     <Form.Group>
-                        <Form.Label>First Name</Form.Label>
+                        <Form.Label>First Name <span className="text-danger">*</span></Form.Label>
                         <Form.Control
                             type="text"
                             name="first_name"
@@ -48,7 +53,7 @@ function EditBeneficiaryModal({ beneficiary, onClose, onSave }) {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Last Name</Form.Label>
+                        <Form.Label>Last Name <span className="text-danger">*</span></Form.Label>
                         <Form.Control
                             type="text"
                             name="last_name"
@@ -58,7 +63,7 @@ function EditBeneficiaryModal({ beneficiary, onClose, onSave }) {
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Email</Form.Label>
+                        <Form.Label>Email <span className="text-danger">*</span></Form.Label>
                         <Form.Control
                             type="email"
                             name="email"
@@ -74,17 +79,17 @@ function EditBeneficiaryModal({ beneficiary, onClose, onSave }) {
                             name="notes"
                             value={editedBeneficiary.notes}
                             onChange={handleChange}
-                            placeholder="Enter any notes"
+                            placeholder="Enter any notes (optional)"
                         />
                     </Form.Group>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={onClose}> {/* Close modal on close button */}
+                <Button variant="secondary" onClick={onClose}>
                     Close
                 </Button>
                 <Button variant="primary" onClick={handleSave}>
-                    Save
+                    Save Changes
                 </Button>
             </Modal.Footer>
         </Modal>

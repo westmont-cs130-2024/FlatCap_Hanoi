@@ -17,6 +17,11 @@ function NewBeneficiaryModal({ show, onClose, onCreate }) {
     };
 
     const handleSubmit = () => {
+        if (!beneficiary.first_name || !beneficiary.last_name || !beneficiary.email) {
+            alert("First Name, Last Name, and Email are required.");
+            return;
+        }
+
         onCreate(beneficiary);
         setBeneficiary({
             first_name: '',
@@ -24,6 +29,7 @@ function NewBeneficiaryModal({ show, onClose, onCreate }) {
             email: '',
             notes: '',
         });
+        onClose();
     };
 
     return (
@@ -34,30 +40,33 @@ function NewBeneficiaryModal({ show, onClose, onCreate }) {
             <Modal.Body>
                 <Form>
                     <Form.Group>
-                        <Form.Label>First Name</Form.Label>
+                        <Form.Label>First Name <span className="text-danger">*</span></Form.Label>
                         <Form.Control
                             type="text"
                             name="first_name"
                             value={beneficiary.first_name}
                             onChange={handleChange}
+                            placeholder="Enter first name"
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Last Name</Form.Label>
+                        <Form.Label>Last Name <span className="text-danger">*</span></Form.Label>
                         <Form.Control
                             type="text"
                             name="last_name"
                             value={beneficiary.last_name}
                             onChange={handleChange}
+                            placeholder="Enter last name"
                         />
                     </Form.Group>
                     <Form.Group>
-                        <Form.Label>Email</Form.Label>
+                        <Form.Label>Email <span className="text-danger">*</span></Form.Label>
                         <Form.Control
                             type="email"
                             name="email"
                             value={beneficiary.email}
                             onChange={handleChange}
+                            placeholder="Enter email"
                         />
                     </Form.Group>
                     <Form.Group>
@@ -67,6 +76,7 @@ function NewBeneficiaryModal({ show, onClose, onCreate }) {
                             name="notes"
                             value={beneficiary.notes}
                             onChange={handleChange}
+                            placeholder="Enter any notes (optional)"
                         />
                     </Form.Group>
                 </Form>

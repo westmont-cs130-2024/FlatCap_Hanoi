@@ -1,18 +1,14 @@
-// src/components/SignIn.js
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { signInUser } from '../services/api';
 import { UserContext } from '../context/UserContext';
 
 const SignIn = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-  });
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
-  const { setUser } = useContext(UserContext); // Access setUser from UserContext
+  const { setUser } = useContext(UserContext);
 
   const handleChange = (e) => {
     setFormData({
@@ -27,15 +23,12 @@ const SignIn = () => {
     setSuccess(false);
     try {
       const response = await signInUser(formData);
-      
+
       if (response.status === 200) {
-        setUser({
-          // THIS IS PROBABLY WHERE YOU WOULD ADD TO SO THAT OTHER ACCOUNT DATA FIELDS CAN SHOW UP
-          first_name: response.data.user.first_name,
-          last_name: response.data.user.last_name,
-        }); // Update the user context with the signed-in user's name
+        const { first_name, last_name, email, phone_number } = response.data.user;
+        setUser({ first_name, last_name, email, phone_number });
         setSuccess(true);
-        setTimeout(() => navigate('/home'), 1000); // Redirect to home after a delay
+        setTimeout(() => navigate('/home', { state: { fromSignIn: true } }), 1000);
       } else {
         setError('Failed to sign in. Please check your credentials.');
       }
