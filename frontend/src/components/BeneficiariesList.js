@@ -4,11 +4,13 @@ import NewBeneficiaryModal from './NewBeneficiaryModal';
 import EditBeneficiaryModal from './EditBeneficiaryModal';
 import Header from './Header';
 import HelpButton from './HelpButton';
+import BeneficiaryValueDistribution from './BeneficiaryValueDistribution';
 
 function BeneficiaryList() {
     const [beneficiaries, setBeneficiaries] = useState([]);
     const [showNewBeneficiaryModal, setShowNewBeneficiaryModal] = useState(false);
     const [selectedBeneficiary, setSelectedBeneficiary] = useState(null);
+    const [refreshDistributionGraph, setRefreshDistributionGraph] = useState(0);
 
     useEffect(() => {
         const fetchBeneficiaries = async () => {
@@ -26,6 +28,10 @@ function BeneficiaryList() {
         try {
             const response = await createBeneficiary(newBeneficiary);
             setBeneficiaries([...beneficiaries, response.data]);
+
+            // Trigger graph refresh
+            setRefreshDistributionGraph(prev => prev + 1);
+
             setShowNewBeneficiaryModal(false);
         } catch (error) {
             console.error('Error creating beneficiary:', error);
@@ -38,6 +44,10 @@ function BeneficiaryList() {
             setBeneficiaries(beneficiaries.map((beneficiary) =>
                 beneficiary.id === id ? response.data : beneficiary
             ));
+
+            // Trigger graph refresh
+            setRefreshDistributionGraph(prev => prev + 1);
+
             setSelectedBeneficiary(null);
         } catch (error) {
             console.error('Error updating beneficiary:', error);
@@ -50,6 +60,10 @@ function BeneficiaryList() {
             try {
                 await deleteBeneficiary(id);
                 setBeneficiaries(beneficiaries.filter((beneficiary) => beneficiary.id !== id));
+
+                // Trigger graph refresh
+                setRefreshDistributionGraph(prev => prev + 1);
+
             } catch (error) {
                 console.error('Error deleting beneficiary:', error);
             }
@@ -76,6 +90,10 @@ function BeneficiaryList() {
                     Add New Beneficiary
                 </button>
             </div>
+
+            {/* Beneficiary Value Distribution Graph */}
+            <BeneficiaryValueDistribution refreshTrigger={refreshDistributionGraph} />
+
 
             {/* Beneficiary List */}
             <div className="bg-light p-4 rounded shadow">
