@@ -1,0 +1,31 @@
+/* faq.css */
+.faq-page {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+  
+  .faq-page h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .faq-page ul {
+    list-style-type: disc;
+    margin-left: 20px;
+  }
+  
+  .faq-page ul li {
+    margin-bottom: 8px;
+  }
+  
+  .faq-page p {
+    margin-bottom: 15px;
+  }
+  
+  .faq-page .btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+  }

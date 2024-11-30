@@ -1,38 +1,57 @@
-/* src/styles/header.css */
-.header-container {
-    /* Add styling here */
-  }
-  
-  .header {
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;
-    background-color: #f8f9fa;
-  }
-  
-  .logo .hanoi {
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .user-info .username {
-    font-size: 18px;
-    color: #333;
-  }
-  
-  .secondary-header {
-    background-color: #e9ecef;
-    padding: 0.5rem 1rem;
-  }
-  
-  .secondary-nav-list {
-    display: flex;
-    gap: 1rem;
-    list-style: none;
-  }
-  
-  .secondary-nav-item {
-    color: #007bff;
-    text-decoration: none;
-  }
-  
+.header-wrapper {
+  width: 100%;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+}
+
+.header {
+  padding: 0.5rem 0;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo .hanoi {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.user-info .username {
+  font-size: 18px;
+}
+
+.user-info .user-link {
+  color: #000;
+  text-decoration: none;
+}
+
+.secondary-header {
+  background-color: #e9ecef;
+  padding: 0.5rem 0;
+}
+
+.secondary-nav-list {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.secondary-nav-item {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.secondary-nav-item.active {
+  font-weight: bold;
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+.secondary-nav-item:hover {
+  color: #0056b3;
+}

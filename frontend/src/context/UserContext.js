@@ -4,7 +4,11 @@ import React, { createContext, useState, useEffect } from 'react';
 export const UserContext = createContext({ user: null, setUser: () => {} });
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // Assuming user data is { firstName, lastName, email }
+  const [user, setUser] = useState(() => {
+    // Initialize user from localStorage if available
+    const savedUser = localStorage.getItem('user');
+    return savedUser ? JSON.parse(savedUser) : null;
+  });
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -14,6 +18,7 @@ export const UserProvider = ({ children }) => {
           const userData = await response.json();
           console.log('User data fetched:', userData); // Debugging
           setUser(userData);
+          localStorage.setItem('user', JSON.stringify(userData)); // Save to localStorage
         } else {
           console.error('Failed to fetch user:', response.statusText);
         }
@@ -22,11 +27,22 @@ export const UserProvider = ({ children }) => {
       }
     };
 
-    fetchUser();
-  }, []);
+    if (!user) {
+      fetchUser();
+    }
+  }, [user]);
+
+  const updateUser = (newUser) => {
+    setUser(newUser);
+    if (newUser) {
+      localStorage.setItem('user', JSON.stringify(newUser)); // Save to localStorage
+    } else {
+      localStorage.removeItem('user'); // Clear localStorage on logout
+    }
+  };
 
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={{ user, setUser: updateUser }}>
       {children}
     </UserContext.Provider>
   );

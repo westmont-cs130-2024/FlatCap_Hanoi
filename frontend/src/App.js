@@ -10,6 +10,7 @@ import DebtList from './components/DebtList';
 import Documents from './components/Documents';
 import AccountPage from "./components/AccountPage";
 import BeneficiariesList from "./components/BeneficiariesList";
+import FAQPage from './components/FAQPage'; // Import the FAQPage component
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path="/create-account" element={<CreateAccount />} />
             <Route path="/account" element={<AccountPage />} />
             <Route path="/beneficiaries" element={<BeneficiariesList />} />
+            <Route path="/faq" element={<FAQPage />} />
 
           </Routes>
         </div>

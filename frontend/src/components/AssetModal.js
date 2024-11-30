@@ -1,9 +1,7 @@
-// src/components/AssetModal.js
 import React, { useState } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 
 function AssetModal({ asset, onClose, onSave, onDelete }) {
-  // State for the asset fields, initialized to the values of the current asset
   const [editedAsset, setEditedAsset] = useState({
     name: asset.name,
     category: asset.category,
@@ -12,7 +10,6 @@ function AssetModal({ asset, onClose, onSave, onDelete }) {
     description: asset.description,
   });
 
-  // Define the allowed categories for the dropdown
   const allowedCategories = [
     "Real Estate", 
     "Vehicles", 
@@ -29,13 +26,22 @@ function AssetModal({ asset, onClose, onSave, onDelete }) {
   };
 
   const handleSave = () => {
-    onSave(editedAsset); // Trigger save with updated asset details
+    // Validation: Ensure required fields are filled
+    if (!editedAsset.name || !editedAsset.category || !editedAsset.acquisition_date || !editedAsset.location) {
+      alert("All fields marked with * are required.");
+      return;
+    }
+
+    onSave(editedAsset);
     onClose();
   };
 
   const handleDelete = () => {
-    onDelete(asset.id); // Trigger delete for the asset
-    onClose();
+    const confirmed = window.confirm("Are you sure you want to delete this asset?");
+    if (confirmed) {
+      onDelete(asset.id);
+      onClose();
+    }
   };
 
   return (
@@ -46,7 +52,9 @@ function AssetModal({ asset, onClose, onSave, onDelete }) {
       <Modal.Body>
         <Form>
           <Form.Group>
-            <Form.Label>Asset Name</Form.Label>
+            <Form.Label>
+              Asset Name <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               name="name"
@@ -56,7 +64,9 @@ function AssetModal({ asset, onClose, onSave, onDelete }) {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Category</Form.Label>
+            <Form.Label>
+              Category <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               as="select"
               name="category"
@@ -72,7 +82,9 @@ function AssetModal({ asset, onClose, onSave, onDelete }) {
             </Form.Control>
           </Form.Group>
           <Form.Group>
-            <Form.Label>Acquisition Date</Form.Label>
+            <Form.Label>
+              Acquisition Date <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               type="date"
               name="acquisition_date"
@@ -81,7 +93,9 @@ function AssetModal({ asset, onClose, onSave, onDelete }) {
             />
           </Form.Group>
           <Form.Group>
-            <Form.Label>Location</Form.Label>
+            <Form.Label>
+              Location <span className="text-danger">*</span>
+            </Form.Label>
             <Form.Control
               type="text"
               name="location"
@@ -97,7 +111,7 @@ function AssetModal({ asset, onClose, onSave, onDelete }) {
               name="description"
               value={editedAsset.description}
               onChange={handleChange}
-              placeholder="Enter description"
+              placeholder="Enter description (optional)"
             />
           </Form.Group>
         </Form>

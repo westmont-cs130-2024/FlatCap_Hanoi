@@ -1,25 +1,33 @@
-// src/components/DebtList.js
 import React, { useState, useEffect } from 'react';
 import { getDebts, createDebt, deleteDebt, updateDebt } from '../services/api';
 import DebtModal from './DebtModal';
 import NewDebtModal from './NewDebtModal';
 import Header from './Header';
+import HelpButton from './HelpButton';
 
 function DebtList() {
   const [debts, setDebts] = useState([]);
+  const [groupedDebts, setGroupedDebts] = useState({ Unpaid: [], "Partially Paid": [], Paid: [] });
   const [selectedDebt, setSelectedDebt] = useState(null);
   const [showNewDebtModal, setShowNewDebtModal] = useState(false);
 
-  // Fetch debts from the API
   useEffect(() => {
     const fetchDebts = async () => {
       const response = await getDebts();
-      setDebts(response.data);
+      const allDebts = response.data;
+
+      const grouped = {
+        Unpaid: allDebts.filter((debt) => debt.status === "Unpaid"),
+        "Partially Paid": allDebts.filter((debt) => debt.status === "Partially Paid"),
+        Paid: allDebts.filter((debt) => debt.status === "Paid"),
+      };
+
+      setDebts(allDebts);
+      setGroupedDebts(grouped);
     };
     fetchDebts();
   }, []);
 
-  // Open edit modal for a debt
   const openEditModal = (debt) => {
     setSelectedDebt(debt);
   };
@@ -28,75 +36,145 @@ function DebtList() {
     setSelectedDebt(null);
   };
 
-  // Save changes to a debt
   const handleSave = async (updatedDebt) => {
-    await updateDebt(selectedDebt.id, updatedDebt); // API call to update debt
-    const response = await getDebts(); // Refresh debt list
-    setDebts(response.data);
+    await updateDebt(selectedDebt.id, updatedDebt);
+    const response = await getDebts();
+    const allDebts = response.data;
+
+    const grouped = {
+      Unpaid: allDebts.filter((debt) => debt.status === "Unpaid"),
+      "Partially Paid": allDebts.filter((debt) => debt.status === "Partially Paid"),
+      Paid: allDebts.filter((debt) => debt.status === "Paid"),
+    };
+
+    setDebts(allDebts);
+    setGroupedDebts(grouped);
     closeModal();
   };
 
-  // Delete a debt
   const handleDelete = async (debtId) => {
-    await deleteDebt(debtId);
-    setDebts(debts.filter((d) => d.id !== debtId)); // Update state after deletion
+    const confirmed = window.confirm('Are you sure you want to delete this debt?');
+    if (confirmed) {
+      await deleteDebt(debtId);
+      const updatedDebts = debts.filter((d) => d.id !== debtId);
+
+      const grouped = {
+        Unpaid: updatedDebts.filter((debt) => debt.status === "Unpaid"),
+        "Partially Paid": updatedDebts.filter((debt) => debt.status === "Partially Paid"),
+        Paid: updatedDebts.filter((debt) => debt.status === "Paid"),
+      };
+
+      setDebts(updatedDebts);
+      setGroupedDebts(grouped);
+    }
   };
 
   return (
-    <div className="container">
+    <div className="container mt-5">
       <Header />
-      <h1 className="display-4 mb-4">Debts</h1>
-
-      <button
-        className="btn btn-primary mb-3"
-        onClick={() => setShowNewDebtModal(true)}
-      >
-        Add New Debt
-      </button>
-
-      <div>
-        {debts.map((debt) => (
-          <div className="card mb-4" key={debt.id}>
-            <div className="card-header">
-              <small className="text-muted">{debt.category}</small>
-            </div>
-            <div className="card-body d-flex justify-content-between align-items-center">
-              <div>
-                <h5
-                  className="card-title mb-0"
-                  style={{textDecoration: 'underline', cursor: 'pointer'}}
-                  onClick={() => openEditModal(debt)}
-                >
-                  {debt.name}
-                </h5>
-                <p className="card-text mb-0">Outstanding: ${debt.total_amount != null && debt.amount_paid != null
-                  ? debt.total_amount - debt.amount_paid
-                  : ''}
-                </p>
-                <p className="card-text mb-0">Paid: ${debt.amount_paid}</p>
-                <p className="card-text mb-0">Total: ${debt.total_amount}</p>
-                <p className="card-text mb-0">Status: {debt.status}</p>
-              </div>
-              <div className="d-flex flex-wrap">
-              <button
-                  className="btn btn-secondary mr-2 mb-2"
-                  onClick={() => openEditModal(debt)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="btn btn-danger ml-2 mb-2"
-                  onClick={() => handleDelete(debt.id)}
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          </div>
-        ))}
+      <div className="text-center mb-4">
+        <h1 className="display-4">Manage Debts</h1>
+        <p className="text-muted">Track and manage your debts efficiently.</p>
+        <HelpButton section="debts" />
+        <button
+          className="btn btn-primary btn-lg"
+          onClick={() => setShowNewDebtModal(true)}
+        >
+          Add New Debt
+        </button>
       </div>
 
-      {/* Edit Debt Modal */}
+      {debts.length === 0 ? (
+        <div className="alert alert-info text-center shadow-sm p-4 bg-light rounded">
+          No debts found. Click <strong>Add New Debt</strong> to get started.
+        </div>
+      ) : (
+        Object.entries(groupedDebts).map(([status, debts]) => (
+          <div key={status} className="mb-4">
+            <div className="p-4 bg-light rounded shadow">
+              <h4
+                className={`text-${
+                  status === "Paid"
+                    ? "success"
+                    : status === "Partially Paid"
+                    ? "warning"
+                    : "danger"
+                }`}
+              >
+                {status}
+              </h4>
+              <ul className="list-group mt-3">
+                {debts.map((debt) => (
+                  <li
+                    key={debt.id}
+                    className="list-group-item d-flex justify-content-between align-items-center"
+                  >
+                    <div>
+                      <h5
+                        style={{ cursor: 'pointer', color: 'black' }}
+                        onClick={() => openEditModal(debt)}
+                      >
+                        {debt.name}
+                      </h5>
+                      <p className="mb-1">
+                        <strong>Outstanding:</strong> $
+                        {debt.total_amount != null && debt.amount_paid != null
+                          ? debt.total_amount - debt.amount_paid
+                          : 'N/A'}
+                      </p>
+                      <p className="mb-1">
+                        <strong>Paid:</strong> $
+                        {debt.amount_paid === 0
+                          ? "0"
+                          : debt.amount_paid != null
+                          ? debt.amount_paid
+                          : "N/A"}
+                      </p>
+                      <p className="mb-1">
+                        <strong>Total:</strong> ${debt.total_amount || "N/A"}
+                      </p>
+                    </div>
+                    <div className="d-flex flex-wrap gap-2">
+                      <button
+                        className="btn btn-sm btn-secondary"
+                        onClick={() => openEditModal(debt)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-sm btn-danger"
+                        onClick={() => handleDelete(debt.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))
+      )}
+
+      <NewDebtModal
+        show={showNewDebtModal}
+        onClose={() => setShowNewDebtModal(false)}
+        onCreate={async (newDebt) => {
+          await createDebt(newDebt);
+          const response = await getDebts();
+          const allDebts = response.data;
+
+          const grouped = {
+            Unpaid: allDebts.filter((debt) => debt.status === "Unpaid"),
+            "Partially Paid": allDebts.filter((debt) => debt.status === "Partially Paid"),
+            Paid: allDebts.filter((debt) => debt.status === "Paid"),
+          };
+
+          setDebts(allDebts);
+          setGroupedDebts(grouped);
+        }}
+      />
+
       {selectedDebt && (
         <DebtModal
           debt={selectedDebt}
@@ -105,17 +183,6 @@ function DebtList() {
           onDelete={handleDelete}
         />
       )}
-
-      {/* New Debt Modal */}
-      <NewDebtModal
-        show={showNewDebtModal}
-        onClose={() => setShowNewDebtModal(false)}
-        onCreate={async (newDebt) => {
-          await createDebt(newDebt);
-          const response = await getDebts();
-          setDebts(response.data);
-        }}
-      />
     </div>
   );
 }
