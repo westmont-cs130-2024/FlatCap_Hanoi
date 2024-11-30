@@ -13,7 +13,11 @@ class Api::V1::AssetsController < ApplicationController
   def create
     user = User.find(request.session['user_id'])
     @asset = user.assets.build(asset_params)
-
+  
+    # Automatically set inventoried to true and inventoried_at to the current time
+    @asset.inventoried = true
+    @asset.inventoried_at = Time.current
+  
     if @asset.save
       render json: @asset, status: :created
     else
