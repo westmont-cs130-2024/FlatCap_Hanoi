@@ -41,11 +41,11 @@ class Api::V1::AssetsController < ApplicationController
     @asset = Asset.find(params[:id])
     updated_params = asset_params
   
-    # Update timestamps for steps
-    updated_params[:inventoried_at] = Time.current if updated_params[:inventoried] == true
-    updated_params[:valued_at] = Time.current if updated_params[:valued] == true
-    updated_params[:marshalled_at] = Time.current if updated_params[:marshalled] == true
-    updated_params[:administered_at] = Time.current if updated_params[:administered] == true
+    # Update timestamps only if they are currently nil and the task is marked as true
+    updated_params[:inventoried_at] = Time.current if updated_params[:inventoried] == true && @asset.inventoried_at.nil?
+    updated_params[:valued_at] = Time.current if updated_params[:valued] == true && @asset.valued_at.nil?
+    updated_params[:marshalled_at] = Time.current if updated_params[:marshalled] == true && @asset.marshalled_at.nil?
+    updated_params[:administered_at] = Time.current if updated_params[:administered] == true && @asset.administered_at.nil?
   
     if @asset.update(updated_params)
       render json: @asset, status: :ok
@@ -53,52 +53,53 @@ class Api::V1::AssetsController < ApplicationController
       render json: { errors: @asset.errors.full_messages }, status: :unprocessable_entity
     end
   end
-
+  
   # app/controllers/api/v1/assets_controller.rb
   def add_beneficiaries
-    begin
-      asset = Asset.find(params[:id])
-      beneficiary_ids = params[:beneficiary_ids]
+  begin
+    asset = Asset.find(params[:id])
+    beneficiary_ids = params[:beneficiary_ids]
 
-      Rails.logger.info "Attempting to add beneficiaries: #{beneficiary_ids} to asset: #{asset.id}"
+    Rails.logger.info "Attempting to add beneficiaries: #{beneficiary_ids} to asset: #{asset.id}"
 
-      if beneficiary_ids.blank?
-        Rails.logger.warn "No beneficiary_ids provided for asset: #{asset.id}"
-        render json: { error: 'No beneficiaries provided' }, status: :unprocessable_entity
-        return
-      end
-
-      ActiveRecord::Base.transaction do
-        # Find the beneficiaries
-        beneficiaries = Beneficiary.where(id: beneficiary_ids)
-
-        # Log if we couldn't find all requested beneficiaries
-        if beneficiaries.length != beneficiary_ids.length
-          Rails.logger.warn "Not all beneficiary IDs were found. Requested: #{beneficiary_ids}, Found: #{beneficiaries.pluck(:id)}"
-        end
-
-        # Clear existing associations and set new ones
-        asset.beneficiaries = beneficiaries
-        asset.update!(administered: true)
-
-        Rails.logger.info "Successfully updated beneficiaries for asset: #{asset.id}"
-
-        render json: {
-          asset: asset.as_json(include: {
-            beneficiaries: { only: [:id, :first_name, :last_name] }
-          })
-        }, status: :ok
-      end
-    rescue ActiveRecord::RecordNotFound => e
-      Rails.logger.error "Asset or Beneficiary not found: #{e.message}"
-      render json: { error: 'Asset or Beneficiary not found' }, status: :not_found
-    rescue => e
-      Rails.logger.error "Error in add_beneficiaries: #{e.class} - #{e.message}"
-      Rails.logger.error e.backtrace.join("\n")
-      render json: { error: 'Failed to update beneficiaries' }, status: :unprocessable_entity
+    if beneficiary_ids.blank?
+      Rails.logger.warn "No beneficiary_ids provided for asset: #{asset.id}"
+      render json: { error: 'No beneficiaries provided' }, status: :unprocessable_entity
+      return
     end
-  end
 
+    ActiveRecord::Base.transaction do
+      # Find the beneficiaries
+      beneficiaries = Beneficiary.where(id: beneficiary_ids)
+
+      # Log if we couldn't find all requested beneficiaries
+      if beneficiaries.length != beneficiary_ids.length
+        Rails.logger.warn "Not all beneficiary IDs were found. Requested: #{beneficiary_ids}, Found: #{beneficiaries.pluck(:id)}"
+      end
+
+      # Clear existing associations and set new ones
+      asset.beneficiaries = beneficiaries
+
+      # Update only the administered-related fields
+      asset.update_columns(administered: true, administered_at: Time.current)
+
+      Rails.logger.info "Successfully updated beneficiaries for asset: #{asset.id}"
+
+      render json: {
+        asset: asset.as_json(include: {
+          beneficiaries: { only: [:id, :first_name, :last_name] }
+        })
+      }, status: :ok
+    end
+  rescue ActiveRecord::RecordNotFound => e
+    Rails.logger.error "Asset or Beneficiary not found: #{e.message}"
+    render json: { error: 'Asset or Beneficiary not found' }, status: :not_found
+  rescue => e
+    Rails.logger.error "Error in add_beneficiaries: #{e.class} - #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
+    render json: { error: 'Failed to update beneficiaries' }, status: :unprocessable_entity
+  end
+end
   private
 
   def asset_params
