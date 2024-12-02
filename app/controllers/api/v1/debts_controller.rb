@@ -43,7 +43,8 @@ class Api::V1::DebtsController < ApplicationController
   end
 
   def total_liabilities
-    total_liabilities = Debt.sum('total_amount - amount_paid')  # Adjust this to fit your data model
+    user = User.find(request.session['user_id'])
+    total_liabilities = Debt.where(user: user).sum('total_amount - amount_paid')
     render json: { total_liabilities: total_liabilities }
   end
 

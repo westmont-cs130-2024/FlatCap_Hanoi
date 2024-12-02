@@ -92,11 +92,6 @@ function DebtList() {
     }
   };
 
-  // const handleCreateDebt = async (newDebt) => {
-  //   await createDebt(newDebt); // Call the API to create the debt
-  //   await fetchDebts(); // Refresh the debts list
-  //   await fetchTotalLiabilities(); // Refresh the total liabilities after creating debt
-  // };
 
   return (
     <div className="container mt-5">
