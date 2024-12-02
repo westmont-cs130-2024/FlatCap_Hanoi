@@ -25,6 +25,7 @@ export const getDebts = () => api.get('/debts');
 export const createDebt = (data) => api.post('/debts', data);
 export const updateDebt = (id, data) => api.put(`/debts/${id}`, data);
 export const deleteDebt = (id) => api.delete(`/debts/${id}`);
+export const getTotalLiabilities = () => api.get('/debts/total_liabilities')
 
 export const getDocuments = () => api.get('/documents');
 export const uploadDocument = (formData) => api.post('/documents', formData, {

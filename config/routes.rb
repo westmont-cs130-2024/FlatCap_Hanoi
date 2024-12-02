@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get 'current_user', to: 'users#current_user'
+
       resources :assets, only: [:index, :create, :show, :update, :destroy] do
         member do
           patch :update_status  # API route for updating the asset's status
@@ -11,7 +12,11 @@ Rails.application.routes.draw do
       end
 
       # Routes for debts
-      resources :debts, only: [:index, :create, :show, :update, :destroy]
+      resources :debts, only: [:index, :create, :show, :update, :destroy] do
+        collection do
+          get 'total_liabilities'  # Custom route for total liabilities
+        end
+      end
 
       # Routes for documents
       resources :documents, only: [:index, :create, :destroy]

@@ -42,6 +42,11 @@ class Api::V1::DebtsController < ApplicationController
     end
   end
 
+  def total_liabilities
+    total_liabilities = Debt.sum('total_amount - amount_paid')  # Adjust this to fit your data model
+    render json: { total_liabilities: total_liabilities }
+  end
+
   private
 
   # Strong parameters for debt

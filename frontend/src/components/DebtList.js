@@ -1,32 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { getDebts, createDebt, deleteDebt, updateDebt } from '../services/api';
+import {getDebts, createDebt, deleteDebt, updateDebt, getTotalLiabilities} from '../services/api';
 import DebtModal from './DebtModal';
 import NewDebtModal from './NewDebtModal';
 import Header from './Header';
 import HelpButton from './HelpButton';
+import axios from "axios";
 
 function DebtList() {
   const [debts, setDebts] = useState([]);
   const [groupedDebts, setGroupedDebts] = useState({ Unpaid: [], "Partially Paid": [], Paid: [] });
   const [selectedDebt, setSelectedDebt] = useState(null);
   const [showNewDebtModal, setShowNewDebtModal] = useState(false);
+  const [totalLiabilities, setTotalLiabilities] = useState(null);
+  const [error, setError] = useState('');
+
+  const fetchTotalLiabilities = async () => {
+    try {
+      const response = await getTotalLiabilities();
+      console.log(response);
+      setTotalLiabilities(response.data.total_liabilities);
+      setError('');
+    } catch (err) {
+      setError('Failed to fetch total liabilities.');
+      console.error(err);
+    }
+  };
+
+  const fetchDebts = async () => {
+    const response = await getDebts();
+    const allDebts = response.data;
+
+    const grouped = {
+      Unpaid: allDebts.filter((debt) => debt.status === "Unpaid"),
+      "Partially Paid": allDebts.filter((debt) => debt.status === "Partially Paid"),
+      Paid: allDebts.filter((debt) => debt.status === "Paid"),
+    };
+
+    setDebts(allDebts);
+    setGroupedDebts(grouped);
+  };
 
   useEffect(() => {
-    const fetchDebts = async () => {
-      const response = await getDebts();
-      const allDebts = response.data;
-
-      const grouped = {
-        Unpaid: allDebts.filter((debt) => debt.status === "Unpaid"),
-        "Partially Paid": allDebts.filter((debt) => debt.status === "Partially Paid"),
-        Paid: allDebts.filter((debt) => debt.status === "Paid"),
-      };
-
-      setDebts(allDebts);
-      setGroupedDebts(grouped);
-    };
     fetchDebts();
+    fetchTotalLiabilities();
   }, []);
+
 
   const openEditModal = (debt) => {
     setSelectedDebt(debt);
@@ -47,9 +65,12 @@ function DebtList() {
       Paid: allDebts.filter((debt) => debt.status === "Paid"),
     };
 
+
     setDebts(allDebts);
     setGroupedDebts(grouped);
     closeModal();
+
+    await fetchTotalLiabilities();
   };
 
   const handleDelete = async (debtId) => {
@@ -66,8 +87,16 @@ function DebtList() {
 
       setDebts(updatedDebts);
       setGroupedDebts(grouped);
+
+      await fetchTotalLiabilities();
     }
   };
+
+  // const handleCreateDebt = async (newDebt) => {
+  //   await createDebt(newDebt); // Call the API to create the debt
+  //   await fetchDebts(); // Refresh the debts list
+  //   await fetchTotalLiabilities(); // Refresh the total liabilities after creating debt
+  // };
 
   return (
     <div className="container mt-5">
@@ -76,14 +105,25 @@ function DebtList() {
         <h1 className="display-4">Manage Debts</h1>
         <p className="text-muted">Track and manage your debts efficiently.</p>
         <HelpButton section="debts" />
+
+        {/* Add New Debt Button */}
         <button
-          className="btn btn-primary btn-lg"
+          className="btn btn-primary btn-lg mb-3"
           onClick={() => setShowNewDebtModal(true)}
         >
           Add New Debt
         </button>
+
+        {/* Total Liabilities Display */}
+        <div className="mt-3">
+          <p className="text-dark">
+            Total Sum of Liabilities: ${totalLiabilities !== null ? totalLiabilities.toFixed(2) : '0.00'}
+          </p>
+          {error && <p className="text-danger">{error}</p>}
+        </div>
       </div>
 
+      {/* Debts List Rendering */}
       {debts.length === 0 ? (
         <div className="alert alert-info text-center shadow-sm p-4 bg-light rounded">
           No debts found. Click <strong>Add New Debt</strong> to get started.
@@ -97,8 +137,8 @@ function DebtList() {
                   status === "Paid"
                     ? "success"
                     : status === "Partially Paid"
-                    ? "warning"
-                    : "danger"
+                      ? "warning"
+                      : "danger"
                 }`}
               >
                 {status}
@@ -127,8 +167,8 @@ function DebtList() {
                         {debt.amount_paid === 0
                           ? "0"
                           : debt.amount_paid != null
-                          ? debt.amount_paid
-                          : "N/A"}
+                            ? debt.amount_paid
+                            : "N/A"}
                       </p>
                       <p className="mb-1">
                         <strong>Total:</strong> ${debt.total_amount || "N/A"}
@@ -172,6 +212,8 @@ function DebtList() {
 
           setDebts(allDebts);
           setGroupedDebts(grouped);
+
+          await fetchTotalLiabilities();
         }}
       />
 
@@ -185,6 +227,8 @@ function DebtList() {
       )}
     </div>
   );
+
+
 }
 
 export default DebtList;
