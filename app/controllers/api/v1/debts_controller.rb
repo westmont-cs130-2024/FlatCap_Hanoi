@@ -34,7 +34,7 @@ class Api::V1::DebtsController < ApplicationController
 
   # Delete a debt
   def destroy
-    @debt = Debt.find(params[:id]) # Find debt directly
+    @debt = Debt.find(params[:id]) # Find debt directly!
     if @debt.destroy
       render json: { message: 'Debt was successfully deleted.' }, status: :ok
     else
